@@ -69,7 +69,8 @@ export function getCustomExercises(): ExerciseDef[] {
       ex.muscleGroup === '背' ? '厚度' :
       ex.muscleGroup === '肩' ? '前束' :
       ex.muscleGroup === '腿' ? '股四头' :
-      ex.muscleGroup === '臂' ? '二头' : '腹'
+      ex.muscleGroup === '臂' ? '二头' :
+      ex.muscleGroup === '有氧' ? '有氧' : '腹'
     )) as SubMuscleGroup,
     // 旧格式兼容：缺失 equipment 时默认徒手
     equipment: (ex.equipment ?? '徒手') as Equipment,

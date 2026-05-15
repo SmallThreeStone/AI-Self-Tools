@@ -1,5 +1,5 @@
 // ===== 训练记录 =====
-export type MuscleGroup = '胸' | '背' | '肩' | '腿' | '臂' | '腹' | '有氧' | '全身';
+export type MuscleGroup = '胸' | '背' | '肩' | '腿' | '臂' | '手臂' | '腹' | '有氧' | '全身';
 export type ExerciseType = '推' | '拉' | '腿' | '核心' | '有氧' | '其他';
 
 export type SubMuscleGroup =

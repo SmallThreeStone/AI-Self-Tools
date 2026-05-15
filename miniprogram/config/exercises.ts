@@ -7,6 +7,7 @@ export const presetExercises: ExerciseDef[] = [
   { id: 'incline-smith-bench', name: '上斜史密斯卧推', muscleGroup: '胸', subMuscleGroup: '上胸', equipment: '固定器械', type: '推' },
   { id: 'flat-bb-bench', name: '平板杠铃卧推', muscleGroup: '胸', subMuscleGroup: '中胸', equipment: '杠铃', type: '推', imageUrl: '', tags: ['推力', '上肢'] },
   { id: 'flat-db-bench', name: '平板哑铃卧推', muscleGroup: '胸', subMuscleGroup: '中胸', equipment: '哑铃', type: '推', imageUrl: '', tags: ['推力', '上肢'] },
+  { id: 'flat-smith-bench', name: '平板史密斯卧推', muscleGroup: '胸', subMuscleGroup: '中胸', equipment: '固定器械', type: '推' },
   { id: 'hs-bench', name: '悍马机卧推', muscleGroup: '胸', subMuscleGroup: '中胸', equipment: '悍马机', type: '推' },
   { id: 'machine-bench', name: '器械卧推', muscleGroup: '胸', subMuscleGroup: '中胸', equipment: '固定器械', type: '推' },
   { id: 'decline-bb-bench', name: '下斜杠铃卧推', muscleGroup: '胸', subMuscleGroup: '下胸', equipment: '杠铃', type: '推' },
@@ -17,10 +18,12 @@ export const presetExercises: ExerciseDef[] = [
   { id: 'cable-cross', name: '龙门架飞鸟', muscleGroup: '胸', subMuscleGroup: '下胸', equipment: '绳索', type: '推' },
   { id: 'pushup', name: '俯卧撑', muscleGroup: '胸', subMuscleGroup: '中胸', equipment: '徒手', type: '推' },
   { id: 'wide-pushup', name: '宽距俯卧撑', muscleGroup: '胸', subMuscleGroup: '上胸', equipment: '徒手', type: '推' },
+  { id: 'incline-cable-fly', name: '上斜绳索夹胸', muscleGroup: '胸', subMuscleGroup: '上胸', equipment: '绳索', type: '推' },
   // ==================== 背部 (12) ====================
   { id: 'pullup', name: '引体向上', muscleGroup: '背', subMuscleGroup: '宽度', equipment: '徒手', type: '拉', imageUrl: '', tags: ['拉力', '上肢'] },
   { id: 'lat-pulldown', name: '高位下拉', muscleGroup: '背', subMuscleGroup: '宽度', equipment: '绳索', type: '拉', imageUrl: '', tags: ['拉力', '上肢'] },
   { id: 'wide-seated-row', name: '宽距坐姿划船', muscleGroup: '背', subMuscleGroup: '宽度', equipment: '绳索', type: '拉' },
+  { id: 'close-lat-pulldown', name: '窄距对握高位下拉', muscleGroup: '背', subMuscleGroup: '宽度', equipment: '绳索', type: '拉' },
   { id: 'bb-row', name: '杠铃划船', muscleGroup: '背', subMuscleGroup: '厚度', equipment: '杠铃', type: '拉', imageUrl: '', tags: ['拉力', '上肢'] },
   { id: 'db-row', name: '哑铃划船', muscleGroup: '背', subMuscleGroup: '厚度', equipment: '哑铃', type: '拉', imageUrl: '', tags: ['拉力', '上肢'] },
   { id: 'tbar-row', name: 'T杠划船', muscleGroup: '背', subMuscleGroup: '厚度', equipment: '杠铃', type: '拉' },
@@ -35,6 +38,7 @@ export const presetExercises: ExerciseDef[] = [
   { id: 'db-ohp', name: '哑铃推举', muscleGroup: '肩', subMuscleGroup: '前束', equipment: '哑铃', type: '推', imageUrl: '', tags: ['推力', '上肢'] },
   { id: 'arnold-press', name: '阿诺德推举', muscleGroup: '肩', subMuscleGroup: '前束', equipment: '哑铃', type: '推' },
   { id: 'smith-ohp', name: '史密斯推举', muscleGroup: '肩', subMuscleGroup: '前束', equipment: '固定器械', type: '推' },
+  { id: 'front-raise', name: '前平举', muscleGroup: '肩', subMuscleGroup: '前束', equipment: '哑铃', type: '推' },
   { id: 'lat-raise', name: '侧平举', muscleGroup: '肩', subMuscleGroup: '中束', equipment: '哑铃', type: '推', imageUrl: '', tags: ['推力', '上肢'] },
   { id: 'upright-row', name: '杠铃提拉', muscleGroup: '肩', subMuscleGroup: '中束', equipment: '杠铃', type: '推' },
   { id: 'cable-lat-raise', name: '绳索侧平举', muscleGroup: '肩', subMuscleGroup: '中束', equipment: '绳索', type: '推' },
@@ -60,6 +64,7 @@ export const presetExercises: ExerciseDef[] = [
   { id: 'preacher-curl', name: '牧师凳弯举', muscleGroup: '手臂', subMuscleGroup: '二头', equipment: '固定器械', type: '拉' },
   { id: 'hammer-curl', name: '锤式弯举', muscleGroup: '手臂', subMuscleGroup: '二头', equipment: '哑铃', type: '拉' },
   { id: 'cable-curl', name: '绳索弯举', muscleGroup: '手臂', subMuscleGroup: '二头', equipment: '绳索', type: '拉' },
+  { id: 'reverse-curl', name: '反向杠铃弯举', muscleGroup: '手臂', subMuscleGroup: '二头', equipment: '杠铃', type: '拉' },
   { id: 'tricep-pushdown', name: '三头下压', muscleGroup: '手臂', subMuscleGroup: '三头', equipment: '绳索', type: '推', imageUrl: '', tags: ['推力', '手臂'] },
   { id: 'close-grip-bench', name: '窄距卧推', muscleGroup: '手臂', subMuscleGroup: '三头', equipment: '杠铃', type: '推' },
   { id: 'french-press', name: '法式弯举', muscleGroup: '手臂', subMuscleGroup: '三头', equipment: '哑铃', type: '推' },
@@ -72,6 +77,8 @@ export const presetExercises: ExerciseDef[] = [
   { id: 'russian-twist', name: '俄罗斯转体', muscleGroup: '腹', subMuscleGroup: '腹', equipment: '徒手', type: '核心' },
   { id: 'cable-crunch', name: '绳索卷腹', muscleGroup: '腹', subMuscleGroup: '腹', equipment: '绳索', type: '核心' },
   { id: 'machine-crunch', name: '器械卷腹', muscleGroup: '腹', subMuscleGroup: '腹', equipment: '固定器械', type: '核心' },
+  { id: 'jackknife', name: '仰卧两头起', muscleGroup: '腹', subMuscleGroup: '腹', equipment: '徒手', type: '核心' },
+  { id: 'mountain-climber', name: '登山跑', muscleGroup: '腹', subMuscleGroup: '腹', equipment: '徒手', type: '核心' },
   // ==================== 有氧 (6) ====================
   { id: 'incline-walk', name: '爬坡走', muscleGroup: '有氧', subMuscleGroup: '有氧', equipment: '有氧器械', type: '有氧' },
   { id: 'running', name: '跑步', muscleGroup: '有氧', subMuscleGroup: '有氧', equipment: '有氧器械', type: '有氧' },
@@ -79,6 +86,8 @@ export const presetExercises: ExerciseDef[] = [
   { id: 'rowing', name: '划船机', muscleGroup: '有氧', subMuscleGroup: '有氧', equipment: '有氧器械', type: '有氧' },
   { id: 'elliptical', name: '椭圆机', muscleGroup: '有氧', subMuscleGroup: '有氧', equipment: '有氧器械', type: '有氧' },
   { id: 'battle-rope', name: '战绳', muscleGroup: '有氧', subMuscleGroup: '有氧', equipment: '徒手', type: '有氧' },
+  { id: 'burpee', name: '波比跳', muscleGroup: '有氧', subMuscleGroup: '有氧', equipment: '徒手', type: '有氧' },
+  { id: 'kettlebell-swing', name: '壶铃摆荡', muscleGroup: '有氧', subMuscleGroup: '有氧', equipment: '徒手', type: '有氧' },
 ];
 
 export function getAllExercises(): ExerciseDef[] {
