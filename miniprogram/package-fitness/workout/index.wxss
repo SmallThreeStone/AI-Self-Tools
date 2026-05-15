@@ -1,88 +1,205 @@
-.page { padding: 16px; min-height: 100vh; background: #f5f6f8; }
+.page { min-height: 100vh; background: #f5f6f8; }
 .theme-dark { background: #1a1a2e; }
 
-.section { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-.theme-dark .section { background: #16213e; }
+/* ===== 浏览器头部 ===== */
+.browser-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; }
+.browser-title { font-size: 20px; font-weight: 700; color: #333; }
+.theme-dark .browser-title { color: #e0e0e0; }
+.browser-actions { display: flex; gap: 8px; }
+.btn-header { height: 32px; line-height: 32px; padding: 0 14px; font-size: 13px; border-radius: 6px; border: none; }
+.btn-header-primary { background: #1677ff; color: #fff; }
+.btn-header-secondary { background: transparent; color: #1677ff; border: 1px solid #d6e4ff; }
 
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.section-title { font-size: 15px; font-weight: 600; color: #333; }
-.theme-dark .section-title { color: #e0e0e0; }
-.section-link { font-size: 13px; color: #1677ff; }
+/* ===== 浏览器主体 ===== */
+.browser-body { display: flex; gap: 12px; padding: 0 16px; }
 
-/* 建议动作横滚 */
-.suggest-scroll { white-space: nowrap; padding-bottom: 4px; }
-.suggest-chip { display: inline-flex; height: 32px; padding: 0 14px; margin-right: 8px; border-radius: 16px; background: #f0f5ff; border: 1px solid #d6e4ff; align-items: center; justify-content: center; }
-.theme-dark .suggest-chip { background: #1a3a5c; border-color: #2a4a7c; }
-.chip-text { font-size: 13px; color: #1677ff; }
-.theme-dark .chip-text { color: #66aaff; }
+/* ===== 左侧肌群树 ===== */
+.tree-panel { width: 95px; flex-shrink: 0; height: calc(100vh - 100px); }
+.tree-group { margin-bottom: 2px; }
+.tree-group-header { display: flex; align-items: center; padding: 8px 6px; border-radius: 6px; }
+.tree-group-header:active { background: #f0f0f0; }
+.theme-dark .tree-group-header:active { background: #2a2a3e; }
+.tree-arrow { font-size: 10px; color: #999; width: 16px; flex-shrink: 0; }
+.tree-group-name { font-size: 14px; font-weight: 500; color: #333; }
+.theme-dark .tree-group-name { color: #e0e0e0; }
+.tree-children { margin-left: 16px; }
+.tree-child { padding: 6px 8px; border-radius: 6px; margin-bottom: 2px; }
+.tree-child:active { background: #e6f4ff; }
+.tree-child.active { background: #e6f4ff; }
+.theme-dark .tree-child.active { background: #1a3a5c; }
+.tree-child-text { font-size: 12px; color: #666; }
+.tree-child.active .tree-child-text { color: #1677ff; font-weight: 500; }
+.theme-dark .tree-child.active .tree-child-text { color: #66aaff; }
 
-/* 已选动作列表 */
-.exercise-list { }
-.exercise-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
-.theme-dark .exercise-item { border-color: #2a2a3e; }
-.exercise-item:last-child { border-bottom: none; }
-.exercise-item.active { background: #f6ffed; margin: 0 -12px; padding: 12px; border-radius: 8px; border-bottom-color: transparent; }
-.theme-dark .exercise-item.active { background: #1a3a1a; }
-.exercise-info { display: flex; flex-direction: column; gap: 2px; }
-.exercise-name { font-size: 15px; font-weight: 500; color: #333; }
-.theme-dark .exercise-name { color: #e0e0e0; }
-.exercise-meta { font-size: 12px; color: #999; }
-.exercise-actions { display: flex; align-items: center; gap: 8px; }
-.badge-current { font-size: 11px; color: #52c41a; background: #f6ffed; padding: 2px 8px; border-radius: 10px; }
-.theme-dark .badge-current { background: #1a3a1a; }
-.btn-remove { font-size: 14px; color: #999; padding: 4px; }
-.btn-remove:active { color: #ff4d4f; }
+/* ===== 右侧内容 ===== */
+.browser-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
-/* 训练进度 */
-.training-header { padding: 0 0 16px; }
+/* ===== 器材 Tab ===== */
+.equipment-tabs { white-space: nowrap; margin-bottom: 8px; padding: 0; }
+.equipment-tab { display: inline-flex; height: 30px; padding: 0 12px; margin-right: 6px; border-radius: 6px; background: #f5f6f8; align-items: center; }
+.theme-dark .equipment-tab { background: #1a1a2e; }
+.equipment-tab.active { background: #1677ff; }
+.tab-text { font-size: 12px; color: #666; white-space: nowrap; }
+.equipment-tab.active .tab-text { color: #fff; }
+
+/* ===== 动作网格 ===== */
+.exercise-grid { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px; height: calc(100vh - 140px); align-content: flex-start; }
+.grid-card { width: calc(50% - 5px); border-radius: 10px; background: #fff; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); position: relative; box-sizing: border-box; }
+.theme-dark .grid-card { background: #16213e; }
+.grid-card:active { opacity: 0.8; }
+.card-image { height: 80px; border-radius: 6px; background: #f0f5ff; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600; color: #1677ff; margin-bottom: 8px; }
+.theme-dark .card-image { background: #1a3a5c; }
+.card-name { font-size: 13px; font-weight: 500; color: #333; display: block; line-height: 1.3; }
+.theme-dark .card-name { color: #e0e0e0; }
+.card-tag { font-size: 11px; color: #999; display: block; margin-top: 3px; }
+.card-add-btn { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; background: #1677ff; display: flex; align-items: center; justify-content: center; }
+.card-check, .card-plus { color: #fff; font-size: 14px; font-weight: 600; }
+.grid-empty { width: 100%; display: flex; justify-content: center; padding: 48px 0; }
+.grid-empty-text { font-size: 14px; color: #ccc; }
+
+/* ===== 选择栏（底部固定） ===== */
+.selection-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: #fff; border-top: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; z-index: 10; box-shadow: 0 -2px 8px rgba(0,0,0,0.06); }
+.theme-dark .selection-bar { background: #16213e; border-color: #2a2a3e; }
+.selection-info { display: flex; flex-direction: column; gap: 2px; }
+.selection-text { font-size: 14px; color: #333; font-weight: 500; }
+.theme-dark .selection-text { color: #e0e0e0; }
+.selection-detail { font-size: 12px; color: #1677ff; }
+.btn-start { height: 40px; line-height: 40px; padding: 0 20px; background: #1677ff; color: #fff; border-radius: 8px; font-size: 14px; border: none; }
+
+/* ===== 已选列表浮层 ===== */
+.selected-list { position: fixed; bottom: 60px; left: 16px; right: 16px; background: #fff; border-radius: 12px; padding: 16px; z-index: 101; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 50vh; display: flex; flex-direction: column; }
+.theme-dark .selected-list { background: #16213e; }
+.selected-list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.selected-list-title { font-size: 15px; font-weight: 600; color: #333; }
+.theme-dark .selected-list-title { color: #e0e0e0; }
+.selected-list-close { font-size: 18px; color: #999; padding: 4px; }
+.selected-list-scroll { flex: 1; overflow-y: auto; }
+.selected-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+.theme-dark .selected-item { border-color: #2a2a3e; }
+.selected-item:last-child { border-bottom: none; }
+.selected-item-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.selected-item-name { font-size: 14px; color: #333; }
+.theme-dark .selected-item-name { color: #e0e0e0; }
+.selected-item-meta { font-size: 12px; color: #999; }
+.btn-remove-small { font-size: 12px; color: #ff4d4f; padding: 4px 8px; }
+
+/* ===== 蒙层 ===== */
+.mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 100; }
+
+/* ===== 详情弹窗 ===== */
+.detail-panel { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 20px; z-index: 101; max-height: 80vh; overflow-y: auto; }
+.theme-dark .detail-panel { background: #16213e; }
+.detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.detail-title { font-size: 16px; font-weight: 600; color: #333; }
+.theme-dark .detail-title { color: #e0e0e0; }
+.detail-close { font-size: 18px; color: #999; padding: 4px; }
+.detail-image-placeholder { height: 160px; background: #f0f5ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 48px; margin-bottom: 16px; }
+.theme-dark .detail-image-placeholder { background: #1a3a5c; }
+.detail-info { }
+.detail-name { font-size: 18px; font-weight: 600; color: #333; display: block; margin-bottom: 4px; }
+.theme-dark .detail-name { color: #e0e0e0; }
+.detail-meta { font-size: 13px; color: #666; margin-top: 6px; display: block; }
+.theme-dark .detail-meta { color: #999; }
+.detail-desc { font-size: 14px; color: #555; margin-top: 12px; line-height: 1.6; display: block; }
+.theme-dark .detail-desc { color: #aaa; }
+.btn-detail-add { width: 100%; height: 42px; line-height: 42px; background: #1677ff; color: #fff; border-radius: 10px; font-size: 15px; border: none; margin-top: 16px; padding: 0; }
+
+/* ===== 历史弹窗（共用动作历史 + 训练历史） ===== */
+.history-panel { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 20px; z-index: 101; max-height: 60vh; display: flex; flex-direction: column; }
+.theme-dark .history-panel { background: #16213e; }
+.history-empty { text-align: center; padding: 32px 0; color: #999; font-size: 14px; }
+.history-scroll { flex: 1; overflow-y: auto; }
+.history-session { padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.theme-dark .history-session { border-color: #2a2a3e; }
+.history-session:last-child { border-bottom: none; }
+.history-date { font-size: 13px; font-weight: 500; color: #333; display: block; }
+.theme-dark .history-date { color: #e0e0e0; }
+.history-meta { font-size: 12px; color: #999; margin-top: 2px; display: block; }
+.history-sets { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.history-set { font-size: 12px; color: #666; background: #f5f6f8; padding: 2px 8px; border-radius: 4px; }
+.theme-dark .history-set { background: #1a1a2e; color: #999; }
+.history-exercises { font-size: 12px; color: #999; margin-top: 4px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ===== 训练头部 ===== */
+.training-header { padding: 12px 16px; }
 .training-title { font-size: 20px; font-weight: 700; color: #333; display: block; }
 .theme-dark .training-title { color: #e0e0e0; }
 .training-progress { font-size: 13px; color: #999; margin-top: 4px; display: block; }
 
-/* 组表 + 录入 */
-.sets-list { margin-bottom: 12px; }
-.set-row { display: flex; padding: 6px 0; border-bottom: 1px solid #f5f5f5; }
-.set-row.header { font-weight: 600; font-size: 12px; color: #999; }
-.set-col { flex: 1; font-size: 14px; color: #333; }
-.theme-dark .set-col { color: #ccc; }
+/* ===== 动作切换标签 ===== */
+.exercise-tabs { white-space: nowrap; padding: 0 16px; margin-bottom: 12px; }
+.exercise-tab { display: inline-flex; flex-direction: column; height: 44px; padding: 0 14px; margin-right: 6px; border-radius: 8px; background: #f5f6f8; align-items: center; justify-content: center; }
+.theme-dark .exercise-tab { background: #1a1a2e; }
+.exercise-tab.active { background: #e6f4ff; }
+.theme-dark .exercise-tab.active { background: #1a3a5c; }
+.exercise-tab-name { font-size: 13px; color: #666; }
+.exercise-tab.active .exercise-tab-name { color: #1677ff; font-weight: 500; }
+.exercise-tab-sets { font-size: 11px; color: #999; }
+.exercise-tab.active .exercise-tab-sets { color: #1677ff; }
 
+/* ===== 训练卡片 ===== */
+.exercise-card { background: #fff; border-radius: 12px; padding: 16px; margin: 0 16px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.theme-dark .exercise-card { background: #16213e; }
+.exercise-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.exercise-card-name { font-size: 16px; font-weight: 600; color: #333; }
+.theme-dark .exercise-card-name { color: #e0e0e0; }
+.exercise-card-count { font-size: 12px; color: #999; }
+
+/* ===== 组列表 ===== */
+.sets-list { margin-bottom: 12px; }
+.set-row { display: flex; padding: 8px 0; border-bottom: 1px solid #f5f5f5; align-items: center; }
+.theme-dark .set-row { border-color: #2a2a3e; }
+.set-header { font-weight: 600; font-size: 12px; color: #999; padding: 4px 0; }
+.set-col { font-size: 14px; color: #333; }
+.theme-dark .set-col { color: #ccc; }
+.set-col-num { flex: 0.6; }
+.set-col-weight { flex: 1; }
+.set-col-reps { flex: 1; }
+.set-col-note { flex: 1.2; }
+.warmup-badge { font-size: 12px; margin-right: 2px; }
+
+/* ===== 难度评级 ===== */
+.difficulty-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding: 10px 0; border-top: 1px solid #f0f0f0; }
+.theme-dark .difficulty-row { border-color: #2a2a3e; }
+.difficulty-label { font-size: 13px; color: #666; white-space: nowrap; }
+.difficulty-options { display: flex; gap: 8px; }
+.difficulty-option { font-size: 13px; color: #999; padding: 4px 12px; border-radius: 14px; border: 1px solid #e0e0e0; }
+.theme-dark .difficulty-option { border-color: #3a3a4e; }
+.difficulty-option.selected { background: #e6f4ff; color: #1677ff; border-color: #1677ff; font-weight: 500; }
+.theme-dark .difficulty-option.selected { background: #1a3a5c; border-color: #66aaff; color: #66aaff; }
+
+/* ===== 录入行 ===== */
 .input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-.set-input { height: 36px; border-radius: 8px; background: #f5f6f8; text-align: center; font-size: 14px; }
+.set-input { height: 36px; border-radius: 8px; background: #f5f6f8; text-align: center; font-size: 14px; padding: 0 8px; }
 .theme-dark .set-input { background: #1a1a2e; color: #e0e0e0; }
-.set-input.weight { width: 80px; }
-.set-input.reps { width: 80px; }
-.set-input.note { flex: 1; }
+.set-input-weight { width: 90px; }
+.set-input-reps { width: 70px; }
+.set-input-note { flex: 1; }
 .input-x { font-size: 16px; color: #999; }
 
+/* ===== 按钮 ===== */
 .btn-add { width: 100%; height: 42px; line-height: 42px; background: #1677ff; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; margin-bottom: 8px; }
-.btn-finish { width: 100%; height: 42px; line-height: 42px; background: #52c41a; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; }
+.btn-add-set { width: 100%; height: 36px; line-height: 36px; border-radius: 8px; font-size: 13px; border: 1px dashed #d6e4ff; background: transparent; color: #1677ff; margin-bottom: 8px; padding: 0; }
+.theme-dark .btn-add-set { border-color: #2a4a7c; color: #66aaff; }
 
-.exercise-count { font-size: 12px; color: #999; }
+/* ===== 底部操作栏 ===== */
+.action-row { display: flex; gap: 8px; }
+.btn-action { flex: 1; height: 38px; line-height: 38px; border-radius: 8px; font-size: 13px; border: 1px solid #e0e0e0; background: #fff; color: #333; padding: 0; }
+.theme-dark .btn-action { background: #1a1a2e; border-color: #2a2a3e; color: #e0e0e0; }
+.btn-finish { flex: 1; height: 38px; line-height: 38px; background: #52c41a; color: #fff; border-radius: 8px; font-size: 14px; border: none; padding: 0; }
 
-/* 空状态 */
-.empty-section { display: flex; justify-content: center; padding: 48px 0; }
-.empty-text { font-size: 14px; color: #ccc; }
-.theme-dark .empty-text { color: #555; }
-
-/* 搜索弹层 */
-.mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 100; }
-.search-panel { position: fixed; top: 0; left: 0; right: 0; background: #fff; border-radius: 0 0 16px 16px; padding: 16px; z-index: 101; }
-.theme-dark .search-panel { background: #16213e; }
-.search-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.search-input { flex: 1; height: 36px; border-radius: 8px; background: #f5f6f8; padding: 0 12px; font-size: 14px; }
-.theme-dark .search-input { background: #1a1a2e; color: #e0e0e0; }
-.search-cancel { font-size: 14px; color: #1677ff; }
-.search-results { max-height: 300px; overflow-y: auto; }
-.search-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
-.theme-dark .search-item { border-color: #2a2a3e; }
-.search-name { font-size: 14px; color: #333; }
-.theme-dark .search-name { color: #e0e0e0; }
-.search-muscle { font-size: 12px; color: #999; }
-.empty { text-align: center; padding: 24px 0; color: #999; font-size: 14px; }
-
-/* 完成页 */
-.completed-view { display: flex; flex-direction: column; align-items: center; padding-top: 80px; }
+/* ===== 完成页 ===== */
+.completed-view { display: flex; flex-direction: column; align-items: center; padding: 80px 16px 0; }
 .completed-icon { font-size: 64px; }
 .completed-title { font-size: 20px; font-weight: 600; color: #333; margin-top: 16px; }
+.theme-dark .completed-title { color: #e0e0e0; }
 .completed-meta { font-size: 14px; color: #999; margin-top: 8px; }
+.completed-summary { width: 100%; margin-top: 24px; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.theme-dark .completed-summary { background: #16213e; }
+.completed-exercise { padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+.theme-dark .completed-exercise { border-color: #2a2a3e; }
+.completed-exercise:last-child { border-bottom: none; }
+.completed-ex-name { font-size: 14px; font-weight: 500; color: #333; display: block; }
+.theme-dark .completed-ex-name { color: #e0e0e0; }
+.completed-ex-sets { font-size: 12px; color: #999; margin-top: 3px; display: block; }
 .btn-new { margin-top: 32px; width: 200px; height: 44px; line-height: 44px; background: #1677ff; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; }

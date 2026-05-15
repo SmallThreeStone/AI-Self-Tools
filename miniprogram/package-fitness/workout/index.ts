@@ -4,6 +4,7 @@ import {
   getWorkoutSessions,
   saveWorkoutSession,
   getCustomExercises,
+  getExerciseHistory,
 } from '../utils';
 import { getAllExercises } from '../../config/exercises';
 import type { WorkoutSession, WorkoutExercise, WorkoutSet, ExerciseDef } from '../types';
@@ -12,64 +13,47 @@ function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
-/** 从历史记录中提取最常用的动作名，按频率降序，不足则用预设补齐 */
-function getSuggestedExerciseNames(limit = 10): string[] {
-  const sessions = getWorkoutSessions();
-  const freq: Record<string, number> = {};
-  for (const s of sessions) {
-    for (const ex of s.exercises) {
-      freq[ex.exerciseName] = (freq[ex.exerciseName] || 0) + 1;
-    }
-  }
-  const sorted = Object.entries(freq)
-    .sort((a, b) => b[1] - a[1])
-    .map(([name]) => name);
-
-  if (sorted.length >= limit) return sorted.slice(0, limit);
-
-  // 不足则用预设动作补齐
-  const all = getAllExercises();
-  const used = new Set(sorted);
-  const fallback = ['平板哑铃卧推', '杠铃深蹲', '杠铃划船', '哑铃推举', '引体向上',
-    '杠铃弯举', '三头下压', '爬坡走', '卷腹', '哑铃飞鸟'];
-  for (const name of fallback) {
-    if (sorted.length >= limit) break;
-    if (!used.has(name) && all.some((e) => e.name === name)) {
-      sorted.push(name);
-      used.add(name);
-    }
-  }
-  // 再用剩余预设补齐
-  for (const ex of all) {
-    if (sorted.length >= limit) break;
-    if (!used.has(ex.name)) {
-      sorted.push(ex.name);
-      used.add(ex.name);
-    }
-  }
-  return sorted;
-}
-
 Page({
   data: {
     themeClass: 'theme-light',
-    state: 'active' as 'active' | 'completed',
-    // 已选动作
+    state: 'browse' as 'browse' | 'select' | 'active' | 'completed',
+    // 动作浏览器 - 肌群树
+    muscleTree: [
+      { name: '胸', expanded: true, children: ['上胸', '中胸', '下胸'] },
+      { name: '背', expanded: false, children: ['宽度', '厚度'] },
+      { name: '肩', expanded: false, children: ['前束', '中束', '后束'] },
+      { name: '腿', expanded: false, children: ['股四头', '股二头', '臀'] },
+      { name: '手臂', expanded: false, children: ['二头', '三头'] },
+      { name: '腹', expanded: false, children: [] as string[] },
+      { name: '有氧', expanded: false, children: [] as string[] },
+    ],
+    selectedMuscleGroup: '胸',
+    selectedSubGroup: '上胸',
+    equipmentTabs: ['杠铃', '哑铃', '绳索', '悍马机', '固定器械', '徒手'],
+    activeEquipmentTab: 0,
+    browserExercises: [] as ExerciseDef[],
+    // 选择模式
+    selectedExercises: [] as WorkoutExercise[],
+    // 训练模式
     exercises: [] as WorkoutExercise[],
     currentExerciseIdx: 0,
-    latestSessionId: '',
-    // 组录入
     weightInput: '',
     repsInput: '',
     noteInput: '',
     completedSets: 0,
     totalVolume: 0,
-    // 推荐动作（顶部横滚）
-    suggestedExercises: [] as string[],
-    // 动作搜索
-    searchKeyword: '',
-    searchResults: [] as ExerciseDef[],
-    showSearch: false,
+    latestSessionId: '',
+    // 详情弹窗
+    showDetail: false,
+    detailExercise: null as ExerciseDef | null,
+    // 动作历史弹窗
+    showExerciseHistory: false,
+    exerciseHistoryData: null as WorkoutSession[] | null,
+    // 已选列表浮层（选择模式）
+    showSelectedList: false,
+    // 训练历史弹窗
+    showHistoryList: false,
+    historyList: [] as WorkoutSession[],
   },
 
   onShow() {
@@ -77,37 +61,129 @@ Page({
   },
 
   onLoad() {
-    this.setData({
-      suggestedExercises: getSuggestedExerciseNames(10),
-    });
+    this._refreshBrowser();
   },
 
-  // ===== 动作管理 =====
-  addExercise(e: WechatMiniprogram.TouchEvent) {
+  // ===== 动作浏览器 =====
+  _refreshBrowser() {
+    const { selectedSubGroup, equipmentTabs, activeEquipmentTab } = this.data;
+    const all = getAllExercises();
+    let filtered = all.filter((ex) => ex.subMuscleGroup === selectedSubGroup);
+    const equipment = equipmentTabs[activeEquipmentTab];
+    filtered = filtered.filter((ex) => ex.equipment === equipment);
+    this.setData({ browserExercises: filtered });
+  },
+
+  toggleTreeGroup(e: WechatMiniprogram.TouchEvent) {
     const name = e.currentTarget.dataset.name as string;
-    const exercises = [...this.data.exercises];
-    // 去重
-    if (exercises.some((ex) => ex.exerciseName === name)) {
-      wx.showToast({ title: '该动作已在列表中', icon: 'none' });
+    const tree = this.data.muscleTree.map((g) =>
+      g.name === name ? { ...g, expanded: !g.expanded } : g
+    );
+    this.setData({ muscleTree: tree });
+  },
+
+  selectSubGroup(e: WechatMiniprogram.TouchEvent) {
+    const subGroup = e.currentTarget.dataset.subgroup as string;
+    if (subGroup === '腹' || subGroup === '有氧') {
+      this.setData({
+        selectedMuscleGroup: subGroup,
+        selectedSubGroup: subGroup,
+        activeEquipmentTab: 0,
+      });
+      this._refreshBrowser();
       return;
     }
-    const all = [...getAllExercises(), ...getCustomExercises()];
-    const def = all.find((ex) => ex.name === name);
-    exercises.push({
-      exerciseName: name,
-      muscleGroup: def?.muscleGroup ?? '全身' as any,
-      sets: [],
-    });
-    // 自动切换到新动作
+    const parent = this.data.muscleTree.find(
+      (g) => g.children.includes(subGroup as any)
+    );
+    if (!parent) return;
     this.setData({
-      exercises,
-      currentExerciseIdx: exercises.length - 1,
+      selectedMuscleGroup: parent.name,
+      selectedSubGroup: subGroup,
+      activeEquipmentTab: 0,
+    });
+    this._refreshBrowser();
+  },
+
+  selectEquipmentTab(e: WechatMiniprogram.TouchEvent) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    this.setData({ activeEquipmentTab: idx });
+    this._refreshBrowser();
+  },
+
+  // ===== 浏览/选择模式 =====
+  startNewWorkout() {
+    this.setData({ state: 'select', selectedExercises: [] });
+  },
+
+  addToSelection(e: WechatMiniprogram.TouchEvent) {
+    if (this.data.state !== 'select') return;
+    const name = e.currentTarget.dataset.name as string;
+    const all = getAllExercises();
+    const def = all.find((ex) => ex.name === name);
+    if (this.data.selectedExercises.some((ex) => ex.exerciseName === name)) {
+      wx.showToast({ title: '已添加', icon: 'none' });
+      return;
+    }
+    const exercises = [...this.data.selectedExercises, {
+      exerciseName: name,
+      muscleGroup: def?.muscleGroup ?? '全身',
+      subMuscleGroup: def?.subMuscleGroup,
+      equipment: def?.equipment,
+      sets: [
+        { weight: 0, reps: 0, type: 'warmup' as const },
+        { weight: 0, reps: 0 },
+        { weight: 0, reps: 0 },
+        { weight: 0, reps: 0 },
+        { weight: 0, reps: 0 },
+      ],
+      difficulty: undefined,
+    }];
+    this.setData({ selectedExercises: exercises });
+  },
+
+  removeFromSelection(e: WechatMiniprogram.TouchEvent) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    const exercises = [...this.data.selectedExercises];
+    exercises.splice(idx, 1);
+    this.setData({ selectedExercises: exercises });
+  },
+
+  toggleSelectedList() {
+    this.setData({ showSelectedList: !this.data.showSelectedList });
+  },
+
+  beginTraining() {
+    if (this.data.selectedExercises.length === 0) {
+      wx.showToast({ title: '请先选择动作', icon: 'none' });
+      return;
+    }
+    this.setData({
+      state: 'active',
+      exercises: this.data.selectedExercises,
+      currentExerciseIdx: 0,
       weightInput: '',
       repsInput: '',
       noteInput: '',
+      completedSets: 0,
+      totalVolume: 0,
     });
   },
 
+  // ===== 详情弹窗 =====
+  showExerciseDetail(e: WechatMiniprogram.TouchEvent) {
+    const name = e.currentTarget.dataset.name as string;
+    const all = getAllExercises();
+    const def = all.find((ex) => ex.name === name);
+    if (!def) return;
+    this.setData({ showDetail: true, detailExercise: def });
+  },
+
+  closeDetail() {
+    this.setData({ showDetail: false, detailExercise: null });
+  },
+
+  // ===== 动作管理（训练模式） =====
   switchExercise(e: WechatMiniprogram.TouchEvent) {
     const idx = Number(e.currentTarget.dataset.idx);
     if (!Number.isNaN(idx) && idx >= 0 && idx < this.data.exercises.length) {
@@ -118,17 +194,6 @@ Page({
         noteInput: '',
       });
     }
-  },
-
-  removeExercise(e: WechatMiniprogram.TouchEvent) {
-    const idx = Number(e.currentTarget.dataset.idx);
-    if (Number.isNaN(idx)) return;
-    const exercises = [...this.data.exercises];
-    exercises.splice(idx, 1);
-    let cur = this.data.currentExerciseIdx;
-    if (exercises.length === 0) cur = 0;
-    else if (cur >= exercises.length) cur = exercises.length - 1;
-    this.setData({ exercises, currentExerciseIdx: cur });
   },
 
   // ===== 组录入 =====
@@ -153,24 +218,47 @@ Page({
       wx.showToast({ title: '请先添加动作', icon: 'none' });
       return;
     }
-
     const exercises = [...this.data.exercises];
     const idx = this.data.currentExerciseIdx;
     const set: WorkoutSet = { weight, reps, note: this.data.noteInput || undefined };
     exercises[idx] = { ...exercises[idx], sets: [...exercises[idx].sets, set] };
 
-    const completedSets = exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
+    const completedSets = exercises.reduce((sum, ex) => sum + ex.sets.filter((s) => s.weight > 0).length, 0);
     const totalVolume = exercises.reduce((sum, ex) =>
       sum + ex.sets.reduce((s, set) => s + set.weight * set.reps, 0), 0);
 
     this.setData({
-      exercises,
-      completedSets,
-      totalVolume,
-      weightInput: '',
-      repsInput: '',
-      noteInput: '',
+      exercises, completedSets, totalVolume,
+      weightInput: '', repsInput: '', noteInput: '',
     });
+  },
+
+  addEmptySet() {
+    const exercises = [...this.data.exercises];
+    const idx = this.data.currentExerciseIdx;
+    const newSet: WorkoutSet = { weight: 0, reps: 0, type: 'normal' };
+    exercises[idx] = { ...exercises[idx], sets: [...exercises[idx].sets, newSet] };
+    this.setData({ exercises });
+  },
+
+  // ===== 难度评级 =====
+  setDifficulty(e: WechatMiniprogram.TouchEvent) {
+    const level = e.currentTarget.dataset.level as 'easy' | 'normal' | 'hard';
+    const exercises = [...this.data.exercises];
+    const idx = this.data.currentExerciseIdx;
+    exercises[idx] = { ...exercises[idx], difficulty: level };
+    this.setData({ exercises });
+  },
+
+  // ===== 动作历史 =====
+  showExerciseHistory(e: WechatMiniprogram.TouchEvent) {
+    const name = e.currentTarget.dataset.name as string;
+    const history = getExerciseHistory(name);
+    this.setData({ showExerciseHistory: true, exerciseHistoryData: history });
+  },
+
+  closeExerciseHistory() {
+    this.setData({ showExerciseHistory: false, exerciseHistoryData: null });
   },
 
   // ===== 保存 & 结束 =====
@@ -196,61 +284,37 @@ Page({
 
   newWorkout() {
     this.setData({
-      state: 'active',
+      state: 'browse',
       exercises: [],
+      selectedExercises: [],
       currentExerciseIdx: 0,
-      weightInput: '',
-      repsInput: '',
-      noteInput: '',
-      completedSets: 0,
-      totalVolume: 0,
-      suggestedExercises: getSuggestedExerciseNames(10),
+      weightInput: '', repsInput: '', noteInput: '',
+      completedSets: 0, totalVolume: 0,
     });
+    this._refreshBrowser();
   },
 
-  // ===== 动作搜索 =====
-  openSearch() {
-    this.setData({ showSearch: true, searchKeyword: '', searchResults: [] });
+  // ===== 训练历史 =====
+  openHistory() {
+    const historyList = getWorkoutSessions().slice(0, 30);
+    this.setData({ showHistoryList: true, historyList });
   },
 
-  closeSearch() {
-    this.setData({ showSearch: false, searchKeyword: '', searchResults: [] });
+  closeHistory() {
+    this.setData({ showHistoryList: false });
   },
 
-  onSearchInput(e: WechatMiniprogram.Input) {
-    const keyword = e.detail.value;
-    if (!keyword.trim()) {
-      this.setData({ searchResults: [] });
-      return;
-    }
-    const all = getAllExercises();
-    const custom = getCustomExercises();
-    const results = [...all, ...custom].filter((ex) =>
-      ex.name.includes(keyword) || ex.muscleGroup.includes(keyword)
-    );
-    this.setData({ searchResults: results.slice(0, 10), searchKeyword: keyword });
-  },
-
-  selectSearchResult(e: WechatMiniprogram.TouchEvent) {
-    const name = e.currentTarget.dataset.name as string;
-    const exercises = [...this.data.exercises];
-    if (exercises.some((ex) => ex.exerciseName === name)) {
-      wx.showToast({ title: '该动作已在列表中', icon: 'none' });
-      return;
-    }
-    const all = [...getAllExercises(), ...getCustomExercises()];
-    const def = all.find((ex) => ex.name === name);
-    exercises.push({
-      exerciseName: name,
-      muscleGroup: def?.muscleGroup ?? '全身' as any,
-      sets: [],
-    });
-    this.setData({
-      exercises,
-      currentExerciseIdx: exercises.length - 1,
-      showSearch: false,
-      searchKeyword: '',
-      searchResults: [],
+  viewSession(e: WechatMiniprogram.TouchEvent) {
+    const id = e.currentTarget.dataset.id as string;
+    const session = getWorkoutSessions().find((s) => s.id === id);
+    if (!session) return;
+    const detail = session.exercises.map((ex) =>
+      `${ex.exerciseName}: ${ex.sets.filter((s) => s.weight > 0).map((s) => `${s.weight}kg×${s.reps}`).join(', ')}`
+    ).join('\n');
+    wx.showModal({
+      title: session.templateName + ' ' + session.date,
+      content: `总组数: ${session.totalSets}\n总容量: ${session.totalVolume}kg\n\n${detail}`,
+      showCancel: false,
     });
   },
 

@@ -1,108 +1,246 @@
 <view class="page {{themeClass}}">
-  <!-- ===== 状态：训练中 ===== -->
-  <block wx:if="{{state === 'active'}}">
-    <!-- 顶部进度 -->
-    <view class="training-header">
-      <text class="training-title">自由训练</text>
-      <text class="training-progress">已完成 {{completedSets}} 组，总容量 {{totalVolume}} kg</text>
+  <!-- ===== 动作浏览器（浏览/选择模式） ===== -->
+  <block wx:if="{{state === 'browse' || state === 'select'}}">
+    <view class="browser-header">
+      <text class="browser-title">自由训练</text>
+      <view class="browser-actions">
+        <button class="btn-header btn-header-primary" wx:if="{{state === 'browse'}}" bindtap="startNewWorkout">新建训练</button>
+        <button class="btn-header btn-header-secondary" bindtap="openHistory">历史记录</button>
+      </view>
     </view>
 
-    <!-- 建议动作 -->
-    <view class="section">
-      <view class="section-header">
-        <text class="section-title">建议动作</text>
-        <text class="section-link" bindtap="openSearch">搜索更多 ›</text>
-      </view>
-      <scroll-view class="suggest-scroll" scroll-x enable-flex>
-        <view class="suggest-chip" wx:for="{{suggestedExercises}}" wx:key="*this" data-name="{{item}}" bindtap="addExercise">
-          <text class="chip-text">{{item}}</text>
+    <view class="browser-body" style="{{state === 'select' && selectedExercises.length > 0 ? 'padding-bottom: 60px' : ''}}">
+      <!-- 左侧：肌群树 -->
+      <scroll-view class="tree-panel" scroll-y enhanced>
+        <view class="tree-group" wx:for="{{muscleTree}}" wx:key="name">
+          <view class="tree-group-header" data-name="{{item.name}}" bindtap="toggleTreeGroup">
+            <text class="tree-arrow">{{item.expanded ? '▾' : '▸'}}</text>
+            <text class="tree-group-name">{{item.name}}</text>
+          </view>
+          <view wx:if="{{item.expanded}}" class="tree-children">
+            <view
+              wx:for="{{item.children.length > 0 ? item.children : [item.name]}}"
+              wx:for-index="cIdx" wx:for-item="child" wx:key="cIdx"
+              class="tree-child {{selectedSubGroup === child ? 'active' : ''}}"
+              data-subgroup="{{child}}" bindtap="selectSubGroup">
+              <text class="tree-child-text">{{child}}</text>
+            </view>
+          </view>
         </view>
       </scroll-view>
+
+      <!-- 右侧：器材 Tab + 动作网格 -->
+      <view class="browser-content">
+        <scroll-view class="equipment-tabs" scroll-x enable-flex>
+          <view class="equipment-tab {{activeEquipmentTab === idx ? 'active' : ''}}"
+            wx:for="{{equipmentTabs}}" wx:key="*this" data-idx="{{idx}}" bindtap="selectEquipmentTab">
+            <text class="tab-text">{{item}}</text>
+          </view>
+        </scroll-view>
+
+        <scroll-view class="exercise-grid" scroll-y enhanced>
+          <view class="grid-empty" wx:if="{{browserExercises.length === 0}}">
+            <text class="grid-empty-text">该分类暂无动作</text>
+          </view>
+          <view class="grid-card" wx:for="{{browserExercises}}" wx:key="id"
+            data-name="{{item.name}}"
+            bindtap="{{state === 'select' ? 'addToSelection' : 'showExerciseDetail'}}">
+            <view class="card-image">{{item.name.slice(0, 2)}}</view>
+            <text class="card-name">{{item.name}}</text>
+            <text class="card-tag">{{item.subMuscleGroup}} · {{item.equipment}}</text>
+            <view wx:if="{{state === 'select'}}" class="card-add-btn">
+              <text wx:if="{{selectedExercises.some(ex => ex.exerciseName === item.name)}}" class="card-check">✓</text>
+              <text wx:else class="card-plus">+</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
     </view>
 
-    <!-- 已选动作列表 -->
-    <view class="section" wx:if="{{exercises.length > 0}}">
-      <view class="section-header">
-        <text class="section-title">已选动作 ({{exercises.length}})</text>
+    <!-- 选择模式下底部已选栏 -->
+    <view wx:if="{{state === 'select' && selectedExercises.length > 0}}" class="selection-bar">
+      <view class="selection-info">
+        <text class="selection-text">已选 {{selectedExercises.length}} 个动作</text>
+        <text class="selection-detail" bindtap="toggleSelectedList">查看详情 ›</text>
       </view>
-      <view class="exercise-list">
-        <view class="exercise-item {{currentExerciseIdx === idx ? 'active' : ''}}" wx:for="{{exercises}}" wx:key="idx" data-idx="{{idx}}" bindtap="switchExercise">
-          <view class="exercise-info">
-            <text class="exercise-name">{{item.exerciseName}}</text>
-            <text class="exercise-meta">{{item.muscleGroup}} · {{item.sets.length}}组</text>
-          </view>
-          <view class="exercise-actions">
-            <text class="badge-current" wx:if="{{currentExerciseIdx === idx}}">当前</text>
-            <text class="btn-remove" data-idx="{{idx}}" bindtap="removeExercise">✕</text>
-          </view>
+      <button class="btn-start" bindtap="beginTraining">开始训练</button>
+    </view>
+
+    <!-- 已选列表浮层 -->
+    <view wx:if="{{showSelectedList}}">
+      <view class="mask" bindtap="toggleSelectedList"></view>
+      <view class="selected-list">
+        <view class="selected-list-header">
+          <text class="selected-list-title">已选动作 ({{selectedExercises.length}})</text>
+          <text class="selected-list-close" bindtap="toggleSelectedList">✕</text>
         </view>
+        <scroll-view scroll-y class="selected-list-scroll">
+          <view class="selected-item" wx:for="{{selectedExercises}}" wx:for-index="sIdx" wx:key="sIdx">
+            <view class="selected-item-info">
+              <text class="selected-item-name">{{item.exerciseName}}</text>
+              <text class="selected-item-meta">{{item.muscleGroup}} · {{item.sets.length}}组{{item.sets[0]?.type === 'warmup' ? ' · 首组🔥热身' : ''}}</text>
+            </view>
+            <text class="btn-remove-small" data-idx="{{sIdx}}" bindtap="removeFromSelection">移除</text>
+          </view>
+        </scroll-view>
       </view>
     </view>
+  </block>
 
-    <!-- 当前动作录入 -->
-    <view class="section" wx:if="{{exercises.length > 0}}">
-      <view class="section-header">
-        <text class="section-title">{{exercises[currentExerciseIdx].exerciseName}}</text>
-        <text class="exercise-count">{{currentExerciseIdx+1}}/{{exercises.length}}</text>
+  <!-- ===== 训练模式 ===== -->
+  <block wx:elif="{{state === 'active'}}">
+    <view class="training-header">
+      <text class="training-title">自由训练</text>
+      <text class="training-progress">已完成 {{completedSets}} 组 · 总容量 {{totalVolume}} kg</text>
+    </view>
+
+    <!-- 动作切换标签 -->
+    <scroll-view class="exercise-tabs" scroll-x enable-flex>
+      <view class="exercise-tab {{currentExerciseIdx === idx ? 'active' : ''}}"
+        wx:for="{{exercises}}" wx:key="idx" data-idx="{{idx}}" bindtap="switchExercise">
+        <text class="exercise-tab-name">{{item.exerciseName}}</text>
+        <text class="exercise-tab-sets">{{item.sets.filter(s => s.weight > 0).length}}组</text>
+      </view>
+    </scroll-view>
+
+    <view class="exercise-card">
+      <view class="exercise-name-row">
+        <text class="exercise-card-name">{{exercises[currentExerciseIdx].exerciseName}}</text>
+        <text class="exercise-card-count">{{currentExerciseIdx+1}}/{{exercises.length}}</text>
       </view>
 
+      <!-- 组列表 -->
       <view class="sets-list">
-        <view class="set-row header">
-          <text class="set-col">组号</text>
-          <text class="set-col">重量(kg)</text>
-          <text class="set-col">次数</text>
-          <text class="set-col">备注</text>
+        <view class="set-row set-header">
+          <text class="set-col set-col-num">组</text>
+          <text class="set-col set-col-weight">重量</text>
+          <text class="set-col set-col-reps">次数</text>
+          <text class="set-col set-col-note">备注</text>
         </view>
-        <view class="set-row" wx:for="{{exercises[currentExerciseIdx].sets}}" wx:for-index="sIdx" wx:key="*this">
-          <text class="set-col">{{sIdx + 1}}</text>
-          <text class="set-col">{{item.weight}}</text>
-          <text class="set-col">{{item.reps}}</text>
-          <text class="set-col">{{item.note || '-'}}</text>
+        <view class="set-row" wx:for="{{exercises[currentExerciseIdx].sets}}" wx:for-index="sIdx" wx:key="sIdx">
+          <text class="set-col set-col-num">
+            <text wx:if="{{item.type === 'warmup'}}" class="warmup-badge">🔥</text>
+            {{sIdx + 1}}
+          </text>
+          <text class="set-col set-col-weight">{{item.weight || '-'}}</text>
+          <text class="set-col set-col-reps">{{item.reps || '-'}}</text>
+          <text class="set-col set-col-note">{{item.note || '-'}}</text>
         </view>
       </view>
 
+      <!-- 难度评级 -->
+      <view class="difficulty-row">
+        <text class="difficulty-label">本组感受:</text>
+        <view class="difficulty-options">
+          <text class="difficulty-option {{exercises[currentExerciseIdx].difficulty === 'easy' ? 'selected' : ''}}"
+            data-level="easy" bindtap="setDifficulty">简单</text>
+          <text class="difficulty-option {{exercises[currentExerciseIdx].difficulty === 'normal' ? 'selected' : ''}}"
+            data-level="normal" bindtap="setDifficulty">正常</text>
+          <text class="difficulty-option {{exercises[currentExerciseIdx].difficulty === 'hard' ? 'selected' : ''}}"
+            data-level="hard" bindtap="setDifficulty">困难</text>
+        </view>
+      </view>
+
+      <!-- 录入行 -->
       <view class="input-row">
-        <input class="set-input weight" type="digit" placeholder="重量" value="{{weightInput}}" bindinput="onWeightInput" />
+        <input class="set-input set-input-weight" type="digit" placeholder="重量(kg)" value="{{weightInput}}" bindinput="onWeightInput" />
         <text class="input-x">×</text>
-        <input class="set-input reps" type="digit" placeholder="次数" value="{{repsInput}}" bindinput="onRepsInput" />
-        <input class="set-input note" placeholder="备注" value="{{noteInput}}" bindinput="onNoteInput" />
+        <input class="set-input set-input-reps" type="digit" placeholder="次数" value="{{repsInput}}" bindinput="onRepsInput" />
+        <input class="set-input set-input-note" placeholder="备注" value="{{noteInput}}" bindinput="onNoteInput" />
       </view>
 
       <button class="btn-add" bindtap="addSet">✓ 完成本组</button>
-      <button class="btn-finish" bindtap="finishWorkout">✓ 结束训练</button>
-    </view>
+      <button class="btn-add-set" bindtap="addEmptySet">+ 新增一组</button>
 
-    <!-- 空状态 -->
-    <view class="empty-section" wx:if="{{exercises.length === 0}}">
-      <text class="empty-text">点击上方建议动作开始训练</text>
+      <!-- 底部操作栏 -->
+      <view class="action-row">
+        <button class="btn-action" data-name="{{exercises[currentExerciseIdx].exerciseName}}" bindtap="showExerciseHistory">📊 动作历史</button>
+        <button class="btn-finish" bindtap="finishWorkout">✓ 结束训练</button>
+      </view>
     </view>
   </block>
 
-  <!-- ===== 状态：搜索弹层 ===== -->
-  <block wx:if="{{showSearch}}">
-    <view class="mask" bindtap="closeSearch"></view>
-    <view class="search-panel">
-      <view class="search-header">
-        <input class="search-input" placeholder="搜索动作..." value="{{searchKeyword}}" bindinput="onSearchInput" focus="true" />
-        <text class="search-cancel" bindtap="closeSearch">取消</text>
-      </view>
-      <view class="search-results" wx:if="{{searchResults.length > 0}}">
-        <view class="search-item" wx:for="{{searchResults}}" wx:key="id" data-name="{{item.name}}" bindtap="selectSearchResult">
-          <text class="search-name">{{item.name}}</text>
-          <text class="search-muscle">{{item.muscleGroup}}</text>
-        </view>
-      </view>
-      <view class="empty" wx:if="{{searchKeyword && searchResults.length === 0}}">未找到匹配动作</view>
-    </view>
-  </block>
-
-  <!-- ===== 状态：训练完成 ===== -->
+  <!-- ===== 训练完成 ===== -->
   <block wx:elif="{{state === 'completed'}}">
     <view class="completed-view">
       <text class="completed-icon">✅</text>
       <text class="completed-title">训练已保存</text>
       <text class="completed-meta">完成 {{completedSets}} 组 · 总容量 {{totalVolume}} kg</text>
+
+      <view class="completed-summary">
+        <view class="completed-exercise" wx:for="{{exercises}}" wx:key="exerciseName">
+          <text class="completed-ex-name">{{item.exerciseName}}</text>
+          <text class="completed-ex-sets">
+            {{item.sets.filter(s => s.weight > 0).length}}组
+            <text wx:if="{{item.difficulty}}"> · {{item.difficulty === 'easy' ? '简单' : item.difficulty === 'normal' ? '正常' : '困难'}}</text>
+          </text>
+        </view>
+      </view>
+
       <button class="btn-new" bindtap="newWorkout">开始新训练</button>
+    </view>
+  </block>
+
+  <!-- ===== 详情弹窗（浮层，独立于 state） ===== -->
+  <block wx:if="{{showDetail && detailExercise}}">
+    <view class="mask" bindtap="closeDetail"></view>
+    <view class="detail-panel">
+      <view class="detail-header">
+        <text class="detail-title">动作详情</text>
+        <text class="detail-close" bindtap="closeDetail">✕</text>
+      </view>
+      <view class="detail-image-placeholder">🏋️</view>
+      <view class="detail-info">
+        <text class="detail-name">{{detailExercise.name}}</text>
+        <text class="detail-meta">目标肌群 · {{detailExercise.subMuscleGroup}}</text>
+        <text class="detail-meta">器材 · {{detailExercise.equipment}}</text>
+        <text class="detail-meta">类型 · {{detailExercise.type}}</text>
+        <text class="detail-desc" wx:if="{{detailExercise.description}}">{{detailExercise.description}}</text>
+      </view>
+      <button class="btn-detail-add" wx:if="{{state === 'select'}}" data-name="{{detailExercise.name}}" bindtap="addToSelection">
+        {{selectedExercises.some(ex => ex.exerciseName === detailExercise.name) ? '✓ 已添加' : '+ 添加到本次训练'}}
+      </button>
+    </view>
+  </block>
+
+  <!-- ===== 动作历史弹窗 ===== -->
+  <block wx:if="{{showExerciseHistory && exerciseHistoryData !== null}}">
+    <view class="mask" bindtap="closeExerciseHistory"></view>
+    <view class="history-panel">
+      <view class="detail-header">
+        <text class="detail-title">动作历史</text>
+        <text class="detail-close" bindtap="closeExerciseHistory">✕</text>
+      </view>
+      <view wx:if="{{exerciseHistoryData.length === 0}}" class="history-empty">暂无历史记录</view>
+      <scroll-view scroll-y class="history-scroll">
+        <view class="history-session" wx:for="{{exerciseHistoryData}}" wx:key="id">
+          <text class="history-date">{{item.date}} · {{item.templateName}}</text>
+          <view class="history-sets">
+            <text class="history-set" wx:for="{{item.exercises.find(ex => ex.exerciseName === detailExercise?.name)?.sets || []}}" wx:for-index="sIdx" wx:key="sIdx">
+              {{sIdx + 1}}. {{item.weight}}kg × {{item.reps}}
+            </text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </block>
+
+  <!-- ===== 训练历史弹窗 ===== -->
+  <block wx:if="{{showHistoryList}}">
+    <view class="mask" bindtap="closeHistory"></view>
+    <view class="history-panel">
+      <view class="detail-header">
+        <text class="detail-title">训练历史</text>
+        <text class="detail-close" bindtap="closeHistory">✕</text>
+      </view>
+      <view wx:if="{{historyList.length === 0}}" class="history-empty">暂无记录</view>
+      <scroll-view scroll-y class="history-scroll">
+        <view class="history-session" wx:for="{{historyList}}" wx:key="id" data-id="{{item.id}}" bindtap="viewSession">
+          <text class="history-date">{{item.date}} · {{item.templateName}}</text>
+          <text class="history-meta">{{item.totalSets}}组 · {{item.totalVolume}}kg</text>
+          <text class="history-exercises">{{item.exercises.map(e => e.exerciseName).join('、')}}</text>
+        </view>
+      </scroll-view>
     </view>
   </block>
 </view>
