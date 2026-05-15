@@ -3,3 +3,4 @@ miniprogram_npm/
 .worktrees/
 *.log
 .DS_Store
+.claude/
