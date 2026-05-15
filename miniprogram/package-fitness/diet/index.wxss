@@ -1,0 +1,6 @@
+.page { padding: 16px; min-height: 100vh; background: #f5f6f8; display: flex; align-items: center; justify-content: center; }
+.theme-dark { background: #1a1a2e; }
+.placeholder { text-align: center; }
+.placeholder-icon { font-size: 48px; display: block; }
+.placeholder-text { font-size: 16px; color: #333; margin-top: 16px; display: block; }
+.placeholder-hint { font-size: 13px; color: #999; margin-top: 8px; display: block; }
