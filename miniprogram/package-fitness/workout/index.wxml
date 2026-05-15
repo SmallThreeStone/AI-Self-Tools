@@ -49,7 +49,7 @@
             <text class="card-name">{{item.name}}</text>
             <text class="card-tag">{{item.subMuscleGroup}} · {{item.equipment}}</text>
             <view wx:if="{{state === 'select'}}" class="card-add-btn">
-              <text wx:if="{{selectedExercises.some(ex => ex.exerciseName === item.name)}}" class="card-check">✓</text>
+              <text wx:if="{{item._selected}}" class="card-check">✓</text>
               <text wx:else class="card-plus">+</text>
             </view>
           </view>
@@ -78,7 +78,7 @@
           <view class="selected-item" wx:for="{{selectedExercises}}" wx:for-index="sIdx" wx:key="sIdx">
             <view class="selected-item-info">
               <text class="selected-item-name">{{item.exerciseName}}</text>
-              <text class="selected-item-meta">{{item.muscleGroup}} · {{item.sets.length}}组{{item.sets[0]?.type === 'warmup' ? ' · 首组🔥热身' : ''}}</text>
+              <text class="selected-item-meta">{{item.muscleGroup}} · {{item.sets.length}}组</text>
             </view>
             <text class="btn-remove-small" data-idx="{{sIdx}}" bindtap="removeFromSelection">移除</text>
           </view>
@@ -99,7 +99,7 @@
       <view class="exercise-tab {{currentExerciseIdx === idx ? 'active' : ''}}"
         wx:for="{{exercises}}" wx:key="idx" data-idx="{{idx}}" bindtap="switchExercise">
         <text class="exercise-tab-name">{{item.exerciseName}}</text>
-        <text class="exercise-tab-sets">{{item.sets.filter(s => s.weight > 0).length}}组</text>
+        <text class="exercise-tab-sets">{{item.sets.length}}组</text>
       </view>
     </scroll-view>
 
@@ -171,7 +171,7 @@
         <view class="completed-exercise" wx:for="{{exercises}}" wx:key="exerciseName">
           <text class="completed-ex-name">{{item.exerciseName}}</text>
           <text class="completed-ex-sets">
-            {{item.sets.filter(s => s.weight > 0).length}}组
+            {{item.sets.length}}组
             <text wx:if="{{item.difficulty}}"> · {{item.difficulty === 'easy' ? '简单' : item.difficulty === 'normal' ? '正常' : '困难'}}</text>
           </text>
         </view>
@@ -198,12 +198,12 @@
         <text class="detail-desc" wx:if="{{detailExercise.description}}">{{detailExercise.description}}</text>
       </view>
       <button class="btn-detail-add" wx:if="{{state === 'select'}}" data-name="{{detailExercise.name}}" bindtap="addToSelection">
-        {{selectedExercises.some(ex => ex.exerciseName === detailExercise.name) ? '✓ 已添加' : '+ 添加到本次训练'}}
+        {{_detailInSelection ? '✓ 已添加' : '+ 添加到本次训练'}}
       </button>
     </view>
   </block>
 
-  <!-- ===== 动作历史弹窗 ===== -->
+  <!-- ===== 动作历史弹窗（数据已预计算） ===== -->
   <block wx:if="{{showExerciseHistory && exerciseHistoryData !== null}}">
     <view class="mask" bindtap="closeExerciseHistory"></view>
     <view class="history-panel">
@@ -213,13 +213,9 @@
       </view>
       <view wx:if="{{exerciseHistoryData.length === 0}}" class="history-empty">暂无历史记录</view>
       <scroll-view scroll-y class="history-scroll">
-        <view class="history-session" wx:for="{{exerciseHistoryData}}" wx:key="id">
+        <view class="history-session" wx:for="{{exerciseHistoryData}}" wx:key="date">
           <text class="history-date">{{item.date}} · {{item.templateName}}</text>
-          <view class="history-sets">
-            <text class="history-set" wx:for="{{item.exercises.find(ex => ex.exerciseName === detailExercise?.name)?.sets || []}}" wx:for-index="sIdx" wx:key="sIdx">
-              {{sIdx + 1}}. {{item.weight}}kg × {{item.reps}}
-            </text>
-          </view>
+          <text class="history-sets-text">{{item.sets}}</text>
         </view>
       </scroll-view>
     </view>
@@ -238,7 +234,7 @@
         <view class="history-session" wx:for="{{historyList}}" wx:key="id" data-id="{{item.id}}" bindtap="viewSession">
           <text class="history-date">{{item.date}} · {{item.templateName}}</text>
           <text class="history-meta">{{item.totalSets}}组 · {{item.totalVolume}}kg</text>
-          <text class="history-exercises">{{item.exercises.map(e => e.exerciseName).join('、')}}</text>
+          <text class="history-exercises">{{item._nameStr}}</text>
         </view>
       </scroll-view>
     </view>

@@ -46,6 +46,7 @@ Page({
     // 详情弹窗
     showDetail: false,
     detailExercise: null as ExerciseDef | null,
+    _detailInSelection: false,
     // 动作历史弹窗
     showExerciseHistory: false,
     exerciseHistoryData: null as WorkoutSession[] | null,
@@ -66,12 +67,17 @@ Page({
 
   // ===== 动作浏览器 =====
   _refreshBrowser() {
-    const { selectedSubGroup, equipmentTabs, activeEquipmentTab } = this.data;
+    const { selectedSubGroup, equipmentTabs, activeEquipmentTab, selectedExercises } = this.data;
     const all = getAllExercises();
     let filtered = all.filter((ex) => ex.subMuscleGroup === selectedSubGroup);
     const equipment = equipmentTabs[activeEquipmentTab];
     filtered = filtered.filter((ex) => ex.equipment === equipment);
-    this.setData({ browserExercises: filtered });
+    const selectedNames = new Set(selectedExercises.map((ex) => ex.exerciseName));
+    const browserExercises = filtered.map((ex) => ({
+      ...ex,
+      _selected: selectedNames.has(ex.name),
+    }));
+    this.setData({ browserExercises: browserExercises as any });
   },
 
   toggleTreeGroup(e: WechatMiniprogram.TouchEvent) {
@@ -119,12 +125,12 @@ Page({
   addToSelection(e: WechatMiniprogram.TouchEvent) {
     if (this.data.state !== 'select') return;
     const name = e.currentTarget.dataset.name as string;
-    const all = getAllExercises();
-    const def = all.find((ex) => ex.name === name);
     if (this.data.selectedExercises.some((ex) => ex.exerciseName === name)) {
       wx.showToast({ title: '已添加', icon: 'none' });
       return;
     }
+    const all = getAllExercises();
+    const def = all.find((ex) => ex.name === name);
     const exercises = [...this.data.selectedExercises, {
       exerciseName: name,
       muscleGroup: def?.muscleGroup ?? '全身',
@@ -139,14 +145,20 @@ Page({
       ],
       difficulty: undefined,
     }];
-    this.setData({ selectedExercises: exercises });
+    this.setData({ selectedExercises: exercises, _detailInSelection: true });
+    this._refreshBrowser();
   },
 
   removeFromSelection(e: WechatMiniprogram.TouchEvent) {
     const idx = Number(e.currentTarget.dataset.idx);
     const exercises = [...this.data.selectedExercises];
     exercises.splice(idx, 1);
-    this.setData({ selectedExercises: exercises });
+    const update: any = { selectedExercises: exercises };
+    if (this.data.showDetail && this.data.detailExercise) {
+      update._detailInSelection = exercises.some((ex) => ex.exerciseName === this.data.detailExercise!.name);
+    }
+    this.setData(update);
+    this._refreshBrowser();
   },
 
   toggleSelectedList() {
@@ -176,7 +188,8 @@ Page({
     const all = getAllExercises();
     const def = all.find((ex) => ex.name === name);
     if (!def) return;
-    this.setData({ showDetail: true, detailExercise: def });
+    const inSelection = this.data.selectedExercises.some((ex) => ex.exerciseName === name);
+    this.setData({ showDetail: true, detailExercise: def, _detailInSelection: inSelection });
   },
 
   closeDetail() {
@@ -254,7 +267,19 @@ Page({
   showExerciseHistory(e: WechatMiniprogram.TouchEvent) {
     const name = e.currentTarget.dataset.name as string;
     const history = getExerciseHistory(name);
-    this.setData({ showExerciseHistory: true, exerciseHistoryData: history });
+    // 预计算展示字符串（WXML 不支持 .map/.find）
+    const exerciseHistoryData = history.map((session) => {
+      const exercise = session.exercises.find((ex) => ex.exerciseName === name);
+      const setStrs = (exercise?.sets ?? [])
+        .filter((s) => s.weight > 0)
+        .map((s, i) => `${i + 1}. ${s.weight}kg × ${s.reps}`);
+      return {
+        date: session.date,
+        templateName: session.templateName,
+        sets: setStrs.join('  '),
+      };
+    });
+    this.setData({ showExerciseHistory: true, exerciseHistoryData: exerciseHistoryData as any });
   },
 
   closeExerciseHistory() {
@@ -296,8 +321,12 @@ Page({
 
   // ===== 训练历史 =====
   openHistory() {
-    const historyList = getWorkoutSessions().slice(0, 30);
-    this.setData({ showHistoryList: true, historyList });
+    const list = getWorkoutSessions().slice(0, 30);
+    const historyList = list.map((s) => ({
+      ...s,
+      _nameStr: s.exercises.map((ex) => ex.exerciseName).join('、'),
+    }));
+    this.setData({ showHistoryList: true, historyList: historyList as any });
   },
 
   closeHistory() {
