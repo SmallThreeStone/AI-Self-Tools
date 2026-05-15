@@ -119,3 +119,36 @@ export function getCustomFoods(): FoodDef[] {
 export function saveCustomFoods(list: FoodDef[]): void {
   saveJSON(K.CUSTOM_FOODS, list);
 }
+
+export function getExerciseHistory(exerciseName: string): WorkoutSession[] {
+  return getWorkoutSessions().filter((s) =>
+    s.exercises.some((ex) => ex.exerciseName === exerciseName)
+  );
+}
+
+export function getExerciseMaxWeight(exerciseName: string): number {
+  let max = 0;
+  for (const s of getWorkoutSessions()) {
+    for (const ex of s.exercises) {
+      if (ex.exerciseName === exerciseName) {
+        for (const set of ex.sets) {
+          if (set.weight > max) max = set.weight;
+        }
+      }
+    }
+  }
+  return max;
+}
+
+export function getExerciseMaxVolume(exerciseName: string): number {
+  let max = 0;
+  for (const s of getWorkoutSessions()) {
+    for (const ex of s.exercises) {
+      if (ex.exerciseName === exerciseName) {
+        const vol = ex.sets.reduce((sum, set) => sum + set.weight * set.reps, 0);
+        if (vol > max) max = vol;
+      }
+    }
+  }
+  return max;
+}

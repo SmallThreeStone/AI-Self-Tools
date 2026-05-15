@@ -2,24 +2,46 @@
 export type MuscleGroup = '胸' | '背' | '肩' | '腿' | '臂' | '腹' | '有氧' | '全身';
 export type ExerciseType = '推' | '拉' | '腿' | '核心' | '有氧' | '其他';
 
+export type SubMuscleGroup =
+  | '上胸' | '中胸' | '下胸'
+  | '宽度' | '厚度'
+  | '前束' | '中束' | '后束'
+  | '股四头' | '股二头' | '臀'
+  | '二头' | '三头'
+  | '腹' | '有氧';
+
+export type Equipment =
+  | '杠铃' | '哑铃' | '绳索' | '悍马机' | '固定器械' | '徒手' | '有氧器械';
+
+export type SetType = 'warmup' | 'normal' | 'drop' | 'failure';
+
 export interface ExerciseDef {
   id: string;
   name: string;
   muscleGroup: MuscleGroup;
+  subMuscleGroup: SubMuscleGroup;
+  equipment: Equipment;
   type: ExerciseType;
+  description?: string;
+  imageUrl?: string;
+  tags?: string[];
   isCustom?: boolean;
 }
 
 export interface WorkoutSet {
   weight: number;
   reps: number;
+  type?: SetType;
   note?: string;
 }
 
 export interface WorkoutExercise {
   exerciseName: string;
   muscleGroup: MuscleGroup;
+  subMuscleGroup?: SubMuscleGroup;
+  equipment?: Equipment;
   sets: WorkoutSet[];
+  difficulty?: 'easy' | 'normal' | 'hard';
 }
 
 export interface WorkoutSession {
