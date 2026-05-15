@@ -1,0 +1,67 @@
+.page { padding: 16px; min-height: 100vh; background: #f5f6f8; }
+.theme-dark { background: #1a1a2e; }
+
+.section { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.theme-dark .section { background: #16213e; }
+
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.section-title { font-size: 15px; font-weight: 600; color: #333; }
+.theme-dark .section-title { color: #e0e0e0; }
+.section-link { font-size: 13px; color: #1677ff; }
+
+.template-card { padding: 12px; border-radius: 8px; background: #f5f6f8; margin-bottom: 8px; }
+.theme-dark .template-card { background: #1a1a2e; }
+.template-name { font-size: 15px; font-weight: 600; color: #333; display: block; }
+.theme-dark .template-name { color: #e0e0e0; }
+.template-exercises { font-size: 12px; color: #999; margin-top: 4px; display: block; }
+
+.search-input { width: 100%; height: 36px; border-radius: 8px; background: #f5f6f8; padding: 0 12px; font-size: 14px; margin-top: 8px; }
+.theme-dark .search-input { background: #1a1a2e; color: #e0e0e0; }
+.search-results { margin-top: 8px; }
+.search-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+.search-name { font-size: 14px; color: #333; }
+.search-muscle { font-size: 12px; color: #999; }
+
+.empty { text-align: center; padding: 24px 0; color: #999; font-size: 14px; }
+.history-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+.history-name { font-size: 14px; font-weight: 500; color: #333; display: block; }
+.history-meta { font-size: 12px; color: #999; }
+
+/* 训练中 */
+.training-header { padding: 0 0 16px; }
+.training-title { font-size: 20px; font-weight: 700; color: #333; display: block; }
+.theme-dark .training-title { color: #e0e0e0; }
+.training-progress { font-size: 13px; color: #999; margin-top: 4px; display: block; }
+
+.exercise-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.theme-dark .exercise-card { background: #16213e; }
+.exercise-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.exercise-name { font-size: 16px; font-weight: 600; color: #333; }
+.theme-dark .exercise-name { color: #e0e0e0; }
+.exercise-count { font-size: 12px; color: #999; }
+
+.sets-list { margin-bottom: 12px; }
+.set-row { display: flex; padding: 6px 0; border-bottom: 1px solid #f5f5f5; }
+.set-row.header { font-weight: 600; font-size: 12px; color: #999; }
+.set-col { flex: 1; font-size: 14px; color: #333; }
+.theme-dark .set-col { color: #ccc; }
+
+.input-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.set-input { height: 36px; border-radius: 8px; background: #f5f6f8; text-align: center; font-size: 14px; }
+.theme-dark .set-input { background: #1a1a2e; color: #e0e0e0; }
+.set-input.weight { width: 80px; }
+.set-input.reps { width: 80px; }
+.set-input.note { flex: 1; }
+.input-x { font-size: 16px; color: #999; }
+
+.btn-add { width: 100%; height: 42px; line-height: 42px; background: #1677ff; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; margin-bottom: 8px; }
+.nav-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.btn-nav { flex: 1; height: 38px; line-height: 38px; border-radius: 8px; font-size: 14px; border: 1px solid #e0e0e0; background: #fff; color: #333; text-align: center; padding: 0; }
+.btn-finish { width: 100%; height: 42px; line-height: 42px; background: #52c41a; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; }
+
+/* 完成页 */
+.completed-view { display: flex; flex-direction: column; align-items: center; padding-top: 80px; }
+.completed-icon { font-size: 64px; }
+.completed-title { font-size: 20px; font-weight: 600; color: #333; margin-top: 16px; }
+.completed-meta { font-size: 14px; color: #999; margin-top: 8px; }
+.btn-new { margin-top: 32px; width: 200px; height: 44px; line-height: 44px; background: #1677ff; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; }
