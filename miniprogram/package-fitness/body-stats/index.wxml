@@ -1,0 +1,53 @@
+<view class="page {{themeClass}}">
+  <health-disclaimer themeClass="{{themeClass}}" />
+
+  <view class="section">
+    <text class="section-title">今日记录</text>
+    <view class="form-row">
+      <text class="form-label">体重</text>
+      <input class="form-input" type="digit" placeholder="kg" value="{{weight}}" bindinput="onWeightInput" />
+      <text class="form-required">必填</text>
+    </view>
+    <view class="form-row">
+      <text class="form-label">体脂率</text>
+      <input class="form-input" type="digit" placeholder="%" value="{{bodyFat}}" bindinput="onBodyFatInput" />
+    </view>
+
+    <text class="subsection-title">围度（选填）</text>
+    <view class="form-row"><text class="form-label">胸围</text><input class="form-input" type="digit" placeholder="cm" value="{{chest}}" bindinput="onChestInput" /></view>
+    <view class="form-row"><text class="form-label">腰围</text><input class="form-input" type="digit" placeholder="cm" value="{{waist}}" bindinput="onWaistInput" /></view>
+    <view class="form-row"><text class="form-label">臀围</text><input class="form-input" type="digit" placeholder="cm" value="{{hip}}" bindinput="onHipInput" /></view>
+    <view class="form-row"><text class="form-label">左臂围</text><input class="form-input" type="digit" placeholder="cm" value="{{leftArm}}" bindinput="onLeftArmInput" /></view>
+    <view class="form-row"><text class="form-label">右臂围</text><input class="form-input" type="digit" placeholder="cm" value="{{rightArm}}" bindinput="onRightArmInput" /></view>
+    <view class="form-row"><text class="form-label">左大腿围</text><input class="form-input" type="digit" placeholder="cm" value="{{leftThigh}}" bindinput="onLeftThighInput" /></view>
+    <view class="form-row"><text class="form-label">右大腿围</text><input class="form-input" type="digit" placeholder="cm" value="{{rightThigh}}" bindinput="onRightThighInput" /></view>
+    <view class="form-row"><text class="form-label">左小腿围</text><input class="form-input" type="digit" placeholder="cm" value="{{leftCalf}}" bindinput="onLeftCalfInput" /></view>
+    <view class="form-row"><text class="form-label">右小腿围</text><input class="form-input" type="digit" placeholder="cm" value="{{rightCalf}}" bindinput="onRightCalfInput" /></view>
+
+    <button class="btn-save" bindtap="save">保存</button>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">记录列表</text>
+      <text class="section-link" bindtap="toggleChart">{{showChart ? '隐藏' : '趋势'}}</text>
+    </view>
+
+    <view wx:if="{{showChart && weekWeights.length > 0}}" class="chart-container">
+      <text class="chart-title">体重趋势（近 7 天）</text>
+      <view class="chart-row" wx:for="{{weekWeights}}" wx:for-index="i" wx:key="*this">
+        <text class="chart-label">{{weekLabels[i]}}</text>
+        <view class="chart-bar" style="width: {{(item / (weekWeights[weekWeights.length-1] * 1.1)) * 100 * 0.6}}%"></view>
+        <text class="chart-value">{{item}} kg</text>
+      </view>
+    </view>
+
+    <view wx:if="{{records.length === 0}}" class="empty">暂无记录</view>
+    <view class="record-item" wx:for="{{records}}" wx:key="date">
+      <text class="record-date">{{item.date}}</text>
+      <text class="record-weight">{{item.weight}} kg</text>
+      <text wx:if="{{item.waist}}" class="record-waist">腰 {{item.waist}}cm</text>
+      <text wx:if="{{item.bodyFat}}" class="record-fat">体脂 {{item.bodyFat}}%</text>
+    </view>
+  </view>
+</view>

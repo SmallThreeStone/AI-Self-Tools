@@ -1,0 +1,34 @@
+.page { padding: 16px; min-height: 100vh; background: #f5f6f8; }
+.theme-dark { background: #1a1a2e; }
+
+.section { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.theme-dark .section { background: #16213e; }
+
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.section-title { font-size: 15px; font-weight: 600; color: #333; }
+.theme-dark .section-title { color: #e0e0e0; }
+.section-link { font-size: 13px; color: #1677ff; }
+
+.form-row { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
+.form-label { width: 70px; font-size: 14px; color: #333; flex-shrink: 0; }
+.theme-dark .form-label { color: #ccc; }
+.form-input { flex: 1; height: 34px; border-radius: 6px; background: #f5f6f8; padding: 0 10px; font-size: 14px; text-align: right; }
+.theme-dark .form-input { background: #1a1a2e; color: #e0e0e0; }
+.form-required { font-size: 11px; color: #ff4d4f; margin-left: 6px; }
+
+.subsection-title { display: block; font-size: 13px; font-weight: 600; color: #999; margin: 12px 0 4px; }
+.btn-save { width: 100%; height: 42px; line-height: 42px; background: #1677ff; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; margin-top: 16px; }
+
+.empty { text-align: center; padding: 24px 0; color: #999; font-size: 14px; }
+.record-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+.record-date { font-size: 13px; color: #999; width: 80px; }
+.record-weight { font-size: 15px; font-weight: 600; color: #333; }
+.theme-dark .record-weight { color: #e0e0e0; }
+.record-waist, .record-fat { font-size: 12px; color: #999; }
+
+.chart-container { margin-top: 12px; }
+.chart-title { font-size: 13px; color: #666; margin-bottom: 8px; display: block; }
+.chart-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.chart-label { font-size: 11px; color: #999; width: 40px; text-align: right; }
+.chart-bar { height: 16px; background: linear-gradient(90deg, #1677ff, #69b1ff); border-radius: 3px; min-width: 4px; }
+.chart-value { font-size: 11px; color: #999; }
