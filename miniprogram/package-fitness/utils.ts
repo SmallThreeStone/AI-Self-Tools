@@ -5,6 +5,8 @@ import type {
   DietRecord,
   ExerciseDef,
   FoodDef,
+  SubMuscleGroup,
+  Equipment,
 } from './types';
 
 // ===== Storage Keys =====
@@ -58,7 +60,22 @@ export function saveWorkoutTemplates(templates: WorkoutTemplate[]): void {
 }
 
 export function getCustomExercises(): ExerciseDef[] {
-  return loadJSON<ExerciseDef[]>(K.CUSTOM_EXERCISES, []);
+  const raw = loadJSON<ExerciseDef[]>(K.CUSTOM_EXERCISES, []);
+  return raw.map((ex) => ({
+    ...ex,
+    // 旧格式兼容：缺失 subMuscleGroup 时根据 muscleGroup 推断默认值
+    subMuscleGroup: (ex.subMuscleGroup ?? (
+      ex.muscleGroup === '胸' ? '中胸' :
+      ex.muscleGroup === '背' ? '厚度' :
+      ex.muscleGroup === '肩' ? '前束' :
+      ex.muscleGroup === '腿' ? '股四头' :
+      ex.muscleGroup === '臂' ? '二头' : '腹'
+    )) as SubMuscleGroup,
+    // 旧格式兼容：缺失 equipment 时默认徒手
+    equipment: (ex.equipment ?? '徒手') as Equipment,
+    // 旧格式兼容：muscleGroup '臂' 映射为 '手臂'
+    muscleGroup: (ex.muscleGroup === '臂' ? '手臂' : ex.muscleGroup) as any,
+  }));
 }
 
 export function saveCustomExercises(list: ExerciseDef[]): void {
