@@ -76,6 +76,7 @@ Page({
     const browserExercises = filtered.map((ex) => ({
       ...ex,
       _selected: selectedNames.has(ex.name),
+      _icon: ex.name.slice(0, 2),
     }));
     this.setData({ browserExercises: browserExercises as any });
   },

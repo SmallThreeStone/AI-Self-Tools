@@ -11,7 +11,7 @@
 
     <view class="browser-body" style="{{state === 'select' && selectedExercises.length > 0 ? 'padding-bottom: 60px' : ''}}">
       <!-- 左侧：肌群树 -->
-      <scroll-view class="tree-panel" scroll-y enhanced>
+      <scroll-view class="tree-panel" scroll-y>
         <view class="tree-group" wx:for="{{muscleTree}}" wx:key="name">
           <view class="tree-group-header" data-name="{{item.name}}" bindtap="toggleTreeGroup">
             <text class="tree-arrow">{{item.expanded ? '▾' : '▸'}}</text>
@@ -20,7 +20,7 @@
           <view wx:if="{{item.expanded}}" class="tree-children">
             <view
               wx:for="{{item.children.length > 0 ? item.children : [item.name]}}"
-              wx:for-index="cIdx" wx:for-item="child" wx:key="cIdx"
+              wx:for-index="cIdx" wx:for-item="child" wx:key="*this"
               class="tree-child {{selectedSubGroup === child ? 'active' : ''}}"
               data-subgroup="{{child}}" bindtap="selectSubGroup">
               <text class="tree-child-text">{{child}}</text>
@@ -33,19 +33,19 @@
       <view class="browser-content">
         <scroll-view class="equipment-tabs" scroll-x enable-flex>
           <view class="equipment-tab {{activeEquipmentTab === idx ? 'active' : ''}}"
-            wx:for="{{equipmentTabs}}" wx:key="*this" data-idx="{{idx}}" bindtap="selectEquipmentTab">
+            wx:for="{{equipmentTabs}}" wx:for-index="idx" wx:key="*this" data-idx="{{idx}}" bindtap="selectEquipmentTab">
             <text class="tab-text">{{item}}</text>
           </view>
         </scroll-view>
 
-        <scroll-view class="exercise-grid" scroll-y enhanced>
+        <scroll-view class="exercise-grid" scroll-y>
           <view class="grid-empty" wx:if="{{browserExercises.length === 0}}">
             <text class="grid-empty-text">该分类暂无动作</text>
           </view>
           <view class="grid-card" wx:for="{{browserExercises}}" wx:key="id"
             data-name="{{item.name}}"
             bindtap="{{state === 'select' ? 'addToSelection' : 'showExerciseDetail'}}">
-            <view class="card-image">{{item.name.slice(0, 2)}}</view>
+            <view class="card-image">{{item._icon}}</view>
             <text class="card-name">{{item.name}}</text>
             <text class="card-tag">{{item.subMuscleGroup}} · {{item.equipment}}</text>
             <view wx:if="{{state === 'select'}}" class="card-add-btn">
@@ -75,7 +75,7 @@
           <text class="selected-list-close" bindtap="toggleSelectedList">✕</text>
         </view>
         <scroll-view scroll-y class="selected-list-scroll">
-          <view class="selected-item" wx:for="{{selectedExercises}}" wx:for-index="sIdx" wx:key="sIdx">
+          <view class="selected-item" wx:for="{{selectedExercises}}" wx:for-index="sIdx" wx:key="exerciseName">
             <view class="selected-item-info">
               <text class="selected-item-name">{{item.exerciseName}}</text>
               <text class="selected-item-meta">{{item.muscleGroup}} · {{item.sets.length}}组</text>
@@ -97,7 +97,7 @@
     <!-- 动作切换标签 -->
     <scroll-view class="exercise-tabs" scroll-x enable-flex>
       <view class="exercise-tab {{currentExerciseIdx === idx ? 'active' : ''}}"
-        wx:for="{{exercises}}" wx:key="idx" data-idx="{{idx}}" bindtap="switchExercise">
+        wx:for="{{exercises}}" wx:for-index="idx" wx:key="*this" data-idx="{{idx}}" bindtap="switchExercise">
         <text class="exercise-tab-name">{{item.exerciseName}}</text>
         <text class="exercise-tab-sets">{{item.sets.length}}组</text>
       </view>
@@ -117,7 +117,7 @@
           <text class="set-col set-col-reps">次数</text>
           <text class="set-col set-col-note">备注</text>
         </view>
-        <view class="set-row" wx:for="{{exercises[currentExerciseIdx].sets}}" wx:for-index="sIdx" wx:key="sIdx">
+        <view class="set-row" wx:for="{{exercises[currentExerciseIdx].sets}}" wx:for-index="sIdx" wx:key="*this">
           <text class="set-col set-col-num">
             <text wx:if="{{item.type === 'warmup'}}" class="warmup-badge">🔥</text>
             {{sIdx + 1}}
