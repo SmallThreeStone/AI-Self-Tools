@@ -1,53 +1,49 @@
 <view class="page {{themeClass}}">
-  <!-- ===== 状态：空闲 - 模板选择 ===== -->
-  <block wx:if="{{state === 'idle'}}">
-    <view class="section">
-      <view class="section-header">
-        <text class="section-title">选择训练模板</text>
-        <text class="section-link" bindtap="toggleHistory">历史记录 ›</text>
-      </view>
-      <view class="template-list">
-        <view class="template-card" wx:for="{{templates}}" wx:key="id" data-id="{{item.id}}" bindtap="selectTemplate">
-          <text class="template-name">{{item.name}}</text>
-          <text class="template-exercises">{{item.exerciseNames.join('、')}}</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 手动搜索动作 -->
-    <view class="section">
-      <text class="section-title">临时加动作</text>
-      <input class="search-input" placeholder="搜索动作名..." value="{{searchKeyword}}" bindinput="onSearchInput" />
-      <view wx:if="{{showSearch}}" class="search-results">
-        <view class="search-item" wx:for="{{searchResults}}" wx:key="id" data-name="{{item.name}}" bindtap="selectSearchResult">
-          <text class="search-name">{{item.name}}</text>
-          <text class="search-muscle">{{item.muscleGroup}}</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 历史记录 -->
-    <view wx:if="{{showHistory}}" class="section">
-      <text class="section-title">历史训练</text>
-      <view wx:if="{{history.length === 0}}" class="empty">暂无记录</view>
-      <view class="history-item" wx:for="{{history}}" wx:key="id" data-id="{{item.id}}" bindtap="viewSession">
-        <text class="history-name">{{item.templateName}}</text>
-        <text class="history-meta">{{item.date}} · {{item.totalSets}}组 · {{item.totalVolume}}kg</text>
-      </view>
-    </view>
-  </block>
-
   <!-- ===== 状态：训练中 ===== -->
-  <block wx:elif="{{state === 'active'}}">
+  <block wx:if="{{state === 'active'}}">
+    <!-- 顶部进度 -->
     <view class="training-header">
-      <text class="training-title">{{activeTemplate.name}}</text>
+      <text class="training-title">自由训练</text>
       <text class="training-progress">已完成 {{completedSets}} 组，总容量 {{totalVolume}} kg</text>
     </view>
 
-    <view class="exercise-card">
-      <view class="exercise-name-row">
-        <text class="exercise-name">{{exercises[currentExerciseIdx].exerciseName}}</text>
-        <text class="exercise-count">第{{currentExerciseIdx+1}}/{{exercises.length}}个动作</text>
+    <!-- 建议动作 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">建议动作</text>
+        <text class="section-link" bindtap="openSearch">搜索更多 ›</text>
+      </view>
+      <scroll-view class="suggest-scroll" scroll-x enable-flex>
+        <view class="suggest-chip" wx:for="{{suggestedExercises}}" wx:key="*this" data-name="{{item}}" bindtap="addExercise">
+          <text class="chip-text">{{item}}</text>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 已选动作列表 -->
+    <view class="section" wx:if="{{exercises.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">已选动作 ({{exercises.length}})</text>
+      </view>
+      <view class="exercise-list">
+        <view class="exercise-item {{currentExerciseIdx === idx ? 'active' : ''}}" wx:for="{{exercises}}" wx:key="idx" data-idx="{{idx}}" bindtap="switchExercise">
+          <view class="exercise-info">
+            <text class="exercise-name">{{item.exerciseName}}</text>
+            <text class="exercise-meta">{{item.muscleGroup}} · {{item.sets.length}}组</text>
+          </view>
+          <view class="exercise-actions">
+            <text class="badge-current" wx:if="{{currentExerciseIdx === idx}}">当前</text>
+            <text class="btn-remove" data-idx="{{idx}}" bindtap="removeExercise">✕</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 当前动作录入 -->
+    <view class="section" wx:if="{{exercises.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">{{exercises[currentExerciseIdx].exerciseName}}</text>
+        <text class="exercise-count">{{currentExerciseIdx+1}}/{{exercises.length}}</text>
       </view>
 
       <view class="sets-list">
@@ -69,16 +65,34 @@
         <input class="set-input weight" type="digit" placeholder="重量" value="{{weightInput}}" bindinput="onWeightInput" />
         <text class="input-x">×</text>
         <input class="set-input reps" type="digit" placeholder="次数" value="{{repsInput}}" bindinput="onRepsInput" />
-        <input class="set-input note" placeholder="备注(选填)" value="{{noteInput}}" bindinput="onNoteInput" />
+        <input class="set-input note" placeholder="备注" value="{{noteInput}}" bindinput="onNoteInput" />
       </view>
 
       <button class="btn-add" bindtap="addSet">✓ 完成本组</button>
-
-      <view class="nav-row">
-        <button wx:if="{{currentExerciseIdx > 0}}" class="btn-nav" bindtap="prevExercise">← 上一个</button>
-        <button wx:if="{{currentExerciseIdx < exercises.length - 1}}" class="btn-nav" bindtap="nextExercise">下一个 →</button>
-      </view>
       <button class="btn-finish" bindtap="finishWorkout">✓ 结束训练</button>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-section" wx:if="{{exercises.length === 0}}">
+      <text class="empty-text">点击上方建议动作开始训练</text>
+    </view>
+  </block>
+
+  <!-- ===== 状态：搜索弹层 ===== -->
+  <block wx:if="{{showSearch}}">
+    <view class="mask" bindtap="closeSearch"></view>
+    <view class="search-panel">
+      <view class="search-header">
+        <input class="search-input" placeholder="搜索动作..." value="{{searchKeyword}}" bindinput="onSearchInput" focus="true" />
+        <text class="search-cancel" bindtap="closeSearch">取消</text>
+      </view>
+      <view class="search-results" wx:if="{{searchResults.length > 0}}">
+        <view class="search-item" wx:for="{{searchResults}}" wx:key="id" data-name="{{item.name}}" bindtap="selectSearchResult">
+          <text class="search-name">{{item.name}}</text>
+          <text class="search-muscle">{{item.muscleGroup}}</text>
+        </view>
+      </view>
+      <view class="empty" wx:if="{{searchKeyword && searchResults.length === 0}}">未找到匹配动作</view>
     </view>
   </block>
 

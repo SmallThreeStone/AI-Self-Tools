@@ -9,37 +9,37 @@
 .theme-dark .section-title { color: #e0e0e0; }
 .section-link { font-size: 13px; color: #1677ff; }
 
-.template-card { padding: 12px; border-radius: 8px; background: #f5f6f8; margin-bottom: 8px; }
-.theme-dark .template-card { background: #1a1a2e; }
-.template-name { font-size: 15px; font-weight: 600; color: #333; display: block; }
-.theme-dark .template-name { color: #e0e0e0; }
-.template-exercises { font-size: 12px; color: #999; margin-top: 4px; display: block; }
+/* 建议动作横滚 */
+.suggest-scroll { white-space: nowrap; padding-bottom: 4px; }
+.suggest-chip { display: inline-flex; height: 32px; padding: 0 14px; margin-right: 8px; border-radius: 16px; background: #f0f5ff; border: 1px solid #d6e4ff; align-items: center; justify-content: center; }
+.theme-dark .suggest-chip { background: #1a3a5c; border-color: #2a4a7c; }
+.chip-text { font-size: 13px; color: #1677ff; }
+.theme-dark .chip-text { color: #66aaff; }
 
-.search-input { width: 100%; height: 36px; border-radius: 8px; background: #f5f6f8; padding: 0 12px; font-size: 14px; margin-top: 8px; }
-.theme-dark .search-input { background: #1a1a2e; color: #e0e0e0; }
-.search-results { margin-top: 8px; }
-.search-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-.search-name { font-size: 14px; color: #333; }
-.search-muscle { font-size: 12px; color: #999; }
+/* 已选动作列表 */
+.exercise-list { }
+.exercise-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.theme-dark .exercise-item { border-color: #2a2a3e; }
+.exercise-item:last-child { border-bottom: none; }
+.exercise-item.active { background: #f6ffed; margin: 0 -12px; padding: 12px; border-radius: 8px; border-bottom-color: transparent; }
+.theme-dark .exercise-item.active { background: #1a3a1a; }
+.exercise-info { display: flex; flex-direction: column; gap: 2px; }
+.exercise-name { font-size: 15px; font-weight: 500; color: #333; }
+.theme-dark .exercise-name { color: #e0e0e0; }
+.exercise-meta { font-size: 12px; color: #999; }
+.exercise-actions { display: flex; align-items: center; gap: 8px; }
+.badge-current { font-size: 11px; color: #52c41a; background: #f6ffed; padding: 2px 8px; border-radius: 10px; }
+.theme-dark .badge-current { background: #1a3a1a; }
+.btn-remove { font-size: 14px; color: #999; padding: 4px; }
+.btn-remove:active { color: #ff4d4f; }
 
-.empty { text-align: center; padding: 24px 0; color: #999; font-size: 14px; }
-.history-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-.history-name { font-size: 14px; font-weight: 500; color: #333; display: block; }
-.history-meta { font-size: 12px; color: #999; }
-
-/* 训练中 */
+/* 训练进度 */
 .training-header { padding: 0 0 16px; }
 .training-title { font-size: 20px; font-weight: 700; color: #333; display: block; }
 .theme-dark .training-title { color: #e0e0e0; }
 .training-progress { font-size: 13px; color: #999; margin-top: 4px; display: block; }
 
-.exercise-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-.theme-dark .exercise-card { background: #16213e; }
-.exercise-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.exercise-name { font-size: 16px; font-weight: 600; color: #333; }
-.theme-dark .exercise-name { color: #e0e0e0; }
-.exercise-count { font-size: 12px; color: #999; }
-
+/* 组表 + 录入 */
 .sets-list { margin-bottom: 12px; }
 .set-row { display: flex; padding: 6px 0; border-bottom: 1px solid #f5f5f5; }
 .set-row.header { font-weight: 600; font-size: 12px; color: #999; }
@@ -55,9 +55,30 @@
 .input-x { font-size: 16px; color: #999; }
 
 .btn-add { width: 100%; height: 42px; line-height: 42px; background: #1677ff; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; margin-bottom: 8px; }
-.nav-row { display: flex; gap: 8px; margin-bottom: 8px; }
-.btn-nav { flex: 1; height: 38px; line-height: 38px; border-radius: 8px; font-size: 14px; border: 1px solid #e0e0e0; background: #fff; color: #333; text-align: center; padding: 0; }
 .btn-finish { width: 100%; height: 42px; line-height: 42px; background: #52c41a; color: #fff; border-radius: 10px; font-size: 15px; border: none; padding: 0; }
+
+.exercise-count { font-size: 12px; color: #999; }
+
+/* 空状态 */
+.empty-section { display: flex; justify-content: center; padding: 48px 0; }
+.empty-text { font-size: 14px; color: #ccc; }
+.theme-dark .empty-text { color: #555; }
+
+/* 搜索弹层 */
+.mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 100; }
+.search-panel { position: fixed; top: 0; left: 0; right: 0; background: #fff; border-radius: 0 0 16px 16px; padding: 16px; z-index: 101; }
+.theme-dark .search-panel { background: #16213e; }
+.search-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.search-input { flex: 1; height: 36px; border-radius: 8px; background: #f5f6f8; padding: 0 12px; font-size: 14px; }
+.theme-dark .search-input { background: #1a1a2e; color: #e0e0e0; }
+.search-cancel { font-size: 14px; color: #1677ff; }
+.search-results { max-height: 300px; overflow-y: auto; }
+.search-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.theme-dark .search-item { border-color: #2a2a3e; }
+.search-name { font-size: 14px; color: #333; }
+.theme-dark .search-name { color: #e0e0e0; }
+.search-muscle { font-size: 12px; color: #999; }
+.empty { text-align: center; padding: 24px 0; color: #999; font-size: 14px; }
 
 /* 完成页 */
 .completed-view { display: flex; flex-direction: column; align-items: center; padding-top: 80px; }
