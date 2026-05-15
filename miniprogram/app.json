@@ -63,6 +63,16 @@
       "root": "package-learn",
       "name": "learn",
       "pages": ["wordbook/index", "wordbook/detail", "wordbook/edit", "wordbook/sentence-edit"]
+    },
+    {
+      "root": "package-fitness",
+      "name": "fitness",
+      "pages": [
+        "index/index",
+        "workout/index",
+        "body-stats/index",
+        "diet/index"
+      ]
     }
   ],
   "preloadRule": {

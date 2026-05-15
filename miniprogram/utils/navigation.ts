@@ -14,17 +14,18 @@ export function resolveToolPath(toolId: string): string | null {
   return t.path.startsWith('/') ? t.path : `/${t.path}`;
 }
 
-function subpackageNameForUrl(url: string): 'tools' | 'canvas' | 'game' | 'beijing' | 'learn' | null {
+function subpackageNameForUrl(url: string): 'tools' | 'canvas' | 'game' | 'beijing' | 'learn' | 'fitness' | null {
   if (url.includes('/package-tools/')) return 'tools';
   if (url.includes('/package-canvas/')) return 'canvas';
   if (url.includes('/package-game/')) return 'game';
   if (url.includes('/package-beijing/')) return 'beijing';
   if (url.includes('/package-learn/')) return 'learn';
+  if (url.includes('/package-fitness/')) return 'fitness';
   return null;
 }
 
 function loadToolSubpackage(
-  name: 'tools' | 'canvas' | 'game' | 'beijing' | 'learn',
+  name: 'tools' | 'canvas' | 'game' | 'beijing' | 'learn' | 'fitness',
   success: () => void,
   fail: (err: WechatMiniprogram.GeneralCallbackResult) => void
 ): void {

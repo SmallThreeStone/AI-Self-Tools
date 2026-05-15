@@ -10,7 +10,7 @@ export type ToolDef = {
   requiredScopes?: string[];
 };
 
-export type CategoryId = 'social' | 'life' | 'efficiency' | 'creative' | 'games';
+export type CategoryId = 'social' | 'life' | 'efficiency' | 'creative' | 'games' | 'fitness';
 
 export const categories: {
   id: CategoryId;
@@ -22,6 +22,7 @@ export const categories: {
   { id: 'efficiency', name: '效率工具', icon: '⚡' },
   { id: 'creative', name: '创意设计', icon: '🎨' },
   { id: 'games', name: '休闲', icon: '🎮' },
+  { id: 'fitness', name: '健身管理', icon: '💪' },
 ];
 
 export const tools: ToolDef[] = [
@@ -312,6 +313,15 @@ export const tools: ToolDef[] = [
     path: '/package-game/snake/index',
     icon: '🐍',
     tags: ['贪吃蛇', '单机', '休闲'],
+  },
+  {
+    id: 'fitness',
+    name: '健身记录',
+    desc: '训练、身体、饮食一站式记录',
+    categoryId: 'fitness',
+    path: '/package-fitness/index/index',
+    icon: '💪',
+    tags: ['健身', '训练', '饮食', '体重', '记录'],
   },
 ];
 
