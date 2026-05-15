@@ -1,0 +1,33 @@
+<view class="page {{themeClass}}">
+  <health-disclaimer themeClass="{{themeClass}}" />
+  <view class="overview-card">
+    <view class="overview-item" bindtap="onStartWorkout">
+      <text class="overview-icon">💪</text>
+      <text class="overview-label">训练</text>
+      <text class="overview-value">{{workoutStatus}}</text>
+    </view>
+    <view class="overview-item" bindtap="onRecordWeight">
+      <text class="overview-icon">⚖️</text>
+      <text class="overview-label">体重</text>
+      <text class="overview-value">{{weightStatus}}</text>
+    </view>
+    <view class="overview-item" bindtap="onRecordDiet">
+      <text class="overview-icon">🍽️</text>
+      <text class="overview-label">饮食</text>
+      <text class="overview-value">{{dietStatus}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">体重趋势（近 7 天）</text>
+    <canvas class="chart-canvas" canvas-id="weightChart"></canvas>
+  </view>
+
+  <view class="quick-actions">
+    <button class="action-btn primary" bindtap="onStartWorkout">开始训练</button>
+    <view class="action-row">
+      <button class="action-btn secondary" bindtap="onRecordWeight">记录体重</button>
+      <button class="action-btn secondary" bindtap="onRecordDiet">记录饮食</button>
+    </view>
+  </view>
+</view>

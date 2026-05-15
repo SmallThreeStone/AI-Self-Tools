@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "健身记录",
+  "usingComponents": {
+  "health-disclaimer": "../../components/health-disclaimer/health-disclaimer"
+}
+}
