@@ -1,0 +1,21 @@
+<view class="page {{themeClass}}">
+  <button class="primary" bindtap="onPick">选择图片</button>
+
+  <view class="field">
+    <text class="label">水印文字</text>
+    <input class="input" value="{{text}}" bindinput="onText" bindblur="redraw" />
+  </view>
+
+  <button class="ghost sm" bindtap="onRefresh">刷新预览</button>
+
+  <canvas
+    canvas-id="wmCanvas"
+    id="wmCanvas"
+    class="canvas"
+    style="width: {{canvasW}}px; height: {{canvasH}}px;"
+    disable-scroll="true"
+  />
+
+  <button class="ghost" bindtap="onSave">保存到相册</button>
+  <text class="hint">首次保存请允许相册权限；大图仅供参考分辨率。</text>
+</view>

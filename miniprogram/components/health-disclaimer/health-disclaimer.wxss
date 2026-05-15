@@ -1,0 +1,50 @@
+.wrap.theme-light {
+  --page-bg: #f5f6f8;
+  --surface: #ffffff;
+  --text-primary: #1f1f1f;
+  --text-secondary: #8c8c8c;
+  --border: #ebebeb;
+  --accent: #1677ff;
+}
+
+.wrap.theme-dark {
+  --page-bg: #141414;
+  --surface: #1f1f1f;
+  --text-primary: #f0f0f0;
+  --text-secondary: #a3a3a3;
+  --border: #303030;
+  --accent: #4096ff;
+}
+
+.wrap {
+  margin-bottom: 24rpx;
+}
+
+.inner {
+  padding: 20rpx 24rpx;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  line-height: 1.55;
+  border: 1rpx solid var(--border);
+  background: rgba(22, 119, 255, 0.06);
+}
+
+.theme-dark .inner {
+  background: rgba(64, 150, 255, 0.12);
+}
+
+.text {
+  display: block;
+  color: var(--text-secondary);
+}
+
+.text.extra {
+  margin-top: 12rpx;
+}
+
+.close {
+  display: inline-block;
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: var(--accent);
+}

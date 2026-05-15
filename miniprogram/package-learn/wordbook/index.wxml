@@ -1,0 +1,97 @@
+<view class="page {{themeClass}}">
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="中 / 英文搜索（含我的例句）"
+      confirm-type="search"
+      value="{{searchInput}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearchConfirm"
+    />
+    <text class="add-btn" bindtap="onAdd">添加</text>
+    <text wx:if="{{searchInput}}" class="clear" bindtap="onClearSearch">清除</text>
+  </view>
+
+  <scroll-view class="scope-scroll" scroll-x enable-flex>
+    <view class="scope-row">
+      <view
+        class="scope-chip {{scope === 'all' ? 'on' : ''}}"
+        data-scope="all"
+        bindtap="onScope"
+      >
+        全部
+      </view>
+      <view
+        class="scope-chip {{scope === 'daily' ? 'on' : ''}}"
+        data-scope="daily"
+        bindtap="onScope"
+      >
+        日常
+      </view>
+      <view
+        class="scope-chip {{scope === 'trade' ? 'on' : ''}}"
+        data-scope="trade"
+        bindtap="onScope"
+      >
+        外贸
+      </view>
+      <view
+        class="scope-chip {{scope === 'favorites' ? 'on' : ''}}"
+        data-scope="favorites"
+        bindtap="onScope"
+      >
+        仅收藏
+      </view>
+    </view>
+  </scroll-view>
+
+  <scroll-view class="list-wrap" scroll-y style="height: {{listScrollPx}}px;">
+    <block wx:if="{{emptyFavoritesHint}}">
+      <view class="empty">
+        <text class="empty-title">还没有收藏</text>
+        <text class="empty-tip">在词条详情页右上角点亮星标，即可把重点词收进「仅收藏」视图。</text>
+      </view>
+    </block>
+    <block wx:elif="{{emptyVisible}}">
+      <view class="empty">
+        <text class="empty-title">未找到匹配词条</text>
+        <text class="empty-tip">可尝试其它关键词，或切换「全部 / 日常 / 外贸 / 仅收藏」筛选范围。</text>
+      </view>
+    </block>
+    <block wx:else>
+      <view
+        wx:for="{{list}}"
+        wx:key="id"
+        class="row"
+        data-id="{{item.id}}"
+        bindtap="onOpenDetail"
+      >
+        <view class="row-head-row">
+          <view class="row-head">
+            <block wx:for="{{item.headSegs}}" wx:for-item="seg" wx:for-index="si" wx:key="si">
+              <text class="{{seg.hit ? 'hi' : ''}}">{{seg.t}}</text>
+            </block>
+          </view>
+          <view class="row-actions">
+            <text
+              class="star"
+              catchtap="onToggleFav"
+              data-tt="{{item.targetType}}"
+              data-tid="{{item.targetId}}"
+            >
+              {{item.favorited ? '★' : '☆'}}
+            </text>
+            <text wx:if="{{item.isUser}}" class="badge">我的</text>
+          </view>
+        </view>
+        <text wx:if="{{item.showCatBadge}}" class="cat-chip">{{item.catLabel}}</text>
+        <text wx:if="{{item.overridesBuiltin}}" class="sub-hint">已覆盖内置释义</text>
+        <view class="row-zh">
+          <block wx:for="{{item.zhSegs}}" wx:for-item="seg" wx:for-index="zi" wx:key="zi">
+            <text class="{{seg.hit ? 'hi' : ''}}">{{seg.t}}</text>
+          </block>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

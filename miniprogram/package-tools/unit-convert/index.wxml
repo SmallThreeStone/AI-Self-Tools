@@ -1,0 +1,24 @@
+<view class="page {{themeClass}}">
+  <view class="tabs">
+    <text
+      wx:for="{{tabs}}"
+      wx:key="id"
+      class="tab {{kind === item.id ? 'active' : ''}}"
+      data-kind="{{item.id}}"
+      bindtap="onTab"
+    >
+      {{item.name}}
+    </text>
+  </view>
+
+  <view class="hint">
+    <block wx:if="{{kind === 'length'}}">输入「米」为基准（例如 1.75）</block>
+    <block wx:else>输入「千克」为基准（例如 65）</block>
+  </view>
+
+  <input class="input" type="digit" placeholder="输入数值" value="{{input}}" bindinput="onInput" />
+
+  <view class="lines">
+    <text wx:for="{{lines}}" wx:key="*this" class="line">{{item}}</text>
+  </view>
+</view>

@@ -1,0 +1,112 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.hint {
+  display: block;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  padding: 16rpx 24rpx 8rpx;
+  line-height: 1.5;
+}
+
+.scroll {
+  flex: 1;
+  height: 0;
+  padding: 8rpx 24rpx 32rpx;
+  box-sizing: border-box;
+}
+
+.timeline {
+  padding-bottom: 24rpx;
+}
+
+.tl-block {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.tl-axis {
+  width: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 16rpx;
+}
+
+.tl-dot {
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 10rpx;
+  flex-shrink: 0;
+}
+
+.tl-line {
+  flex: 1;
+  width: 4rpx;
+  min-height: 40rpx;
+  background: var(--border);
+  margin-top: 6rpx;
+}
+
+.tl-card {
+  flex: 1;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 16rpx;
+  padding: 20rpx 22rpx;
+  margin-bottom: 20rpx;
+}
+
+.tl-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.tl-date {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tl-tag {
+  font-size: 22rpx;
+  color: var(--accent);
+  border: 1rpx solid var(--accent);
+  border-radius: 8rpx;
+  padding: 2rpx 12rpx;
+}
+
+.tl-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.tl-item:last-child {
+  margin-bottom: 0;
+}
+
+.bullet {
+  color: var(--text-secondary);
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+.tl-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: var(--text-primary);
+  line-height: 1.65;
+}

@@ -1,0 +1,20 @@
+<view class="page {{themeClass}}">
+  <view class="field">
+    <text class="label">长度（8–32）</text>
+    <input class="input" type="number" value="{{length}}" bindinput="onLength" />
+  </view>
+
+  <view class="checks">
+    <button class="chip {{useUpper ? 'on' : ''}}" data-key="useUpper" bindtap="onToggle">大写 A-Z</button>
+    <button class="chip {{useLower ? 'on' : ''}}" data-key="useLower" bindtap="onToggle">小写 a-z</button>
+    <button class="chip {{useNumber ? 'on' : ''}}" data-key="useNumber" bindtap="onToggle">数字</button>
+    <button class="chip {{useSymbol ? 'on' : ''}}" data-key="useSymbol" bindtap="onToggle">符号</button>
+  </view>
+
+  <button class="primary" bindtap="onGenerate">生成</button>
+
+  <view class="out" wx:if="{{result}}">
+    <text class="pwd" selectable>{{result}}</text>
+    <button class="ghost" bindtap="onCopy">复制</button>
+  </view>
+</view>

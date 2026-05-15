@@ -1,0 +1,39 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+  margin-bottom: 20rpx;
+}
+
+.thumb {
+  display: block;
+  margin: 0 auto 16rpx;
+  border-radius: 8rpx;
+  background: #111;
+}
+
+.tip {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1rpx solid var(--accent);
+}
+
+.hidden-canvas {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 400px;
+  height: 400px;
+}

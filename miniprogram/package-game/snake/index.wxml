@@ -1,0 +1,97 @@
+<view class="page {{themeClass}}">
+  <view class="hud">
+    <view class="hud-left">
+      <text class="hud-score">得分 <text class="num">{{score}}</text></text>
+      <text class="hud-high">最佳 <text class="num">{{highScore}}</text></text>
+    </view>
+    <view class="hud-actions">
+      <button class="mini ghost" size="mini" disabled="{{!playing || countdown > 0}}" bindtap="onTogglePause">
+        {{paused ? '继续' : '暂停'}}
+      </button>
+      <button class="mini ghost" size="mini" bindtap="onShowHelp">?</button>
+    </view>
+  </view>
+
+  <view class="speed-row">
+    <text class="speed-label">速度</text>
+    <view class="speed-btns">
+      <button
+        wx:for="{{speedOptions}}"
+        wx:key="*this"
+        class="speed-btn {{speedIndex === index ? 'on' : ''}}"
+        size="mini"
+        data-index="{{index}}"
+        bindtap="onPickSpeed"
+      >
+        {{item}}
+      </button>
+    </view>
+  </view>
+
+  <view class="canvas-wrap" style="{{canvasWrapStyle}}">
+    <canvas type="2d" id="snakeCanvas" class="snake-canvas"></canvas>
+    <view wx:if="{{countdown > 0}}" class="countdown-mask">
+      <text class="countdown-num">{{countdown}}</text>
+      <text class="countdown-hint">准备开始</text>
+    </view>
+    <view
+      wx:if="{{playing && !gameOver && !paused && countdown === 0}}"
+      class="swipe-layer"
+      catchtouchstart="onTouchStart"
+      catchtouchend="onTouchEnd"
+    />
+  </view>
+
+  <!-- 十字方向键：自定义视图样式 -->
+  <view class="dpad-wrap">
+    <view class="dpad-cross">
+      <view class="dpad-spacer" />
+      <view class="pad-cell pad-up" data-dir="0" catchtap="onPadDir">
+        <text class="pad-arrow">↑</text>
+      </view>
+      <view class="dpad-spacer" />
+
+      <view class="pad-cell pad-left" data-dir="3" catchtap="onPadDir">
+        <text class="pad-arrow">←</text>
+      </view>
+      <view class="pad-center" />
+      <view class="pad-cell pad-right" data-dir="1" catchtap="onPadDir">
+        <text class="pad-arrow">→</text>
+      </view>
+
+      <view class="dpad-spacer" />
+      <view class="pad-cell pad-down" data-dir="2" catchtap="onPadDir">
+        <text class="pad-arrow">↓</text>
+      </view>
+      <view class="dpad-spacer" />
+    </view>
+  </view>
+
+  <view wx:if="{{!gameOver}}" class="toolbar">
+    <button class="ghost wide" bindtap="onRestart">重开一局</button>
+  </view>
+
+  <!-- 游戏结束：底部提示条（非全屏挡死） -->
+  <view wx:if="{{gameOver}}" class="game-over-tip">
+    <view class="tip-main">
+      <text wx:if="{{newRecord}}" class="tip-badge">新纪录</text>
+      <text class="tip-text">本局 <text class="tip-score">{{finalScore}}</text> 分</text>
+      <text wx:if="{{!newRecord}}" class="tip-sub">历史最佳 {{highScore}}</text>
+    </view>
+    <text class="tip-hint">再开一局或返回上一页</text>
+    <view class="tip-actions">
+      <button class="tip-btn primary" bindtap="onPlayAgain">再玩一局</button>
+      <button class="tip-btn ghost" bindtap="onBack">返回</button>
+    </view>
+  </view>
+
+  <view wx:if="{{paused && playing && !gameOver && countdown === 0}}" class="mask">
+    <view class="mask-card">
+      <text class="mask-title">已暂停</text>
+      <text class="mask-tip">离开小程序时会自动暂停</text>
+      <button class="primary-btn" bindtap="onTogglePause">继续游戏</button>
+    </view>
+  </view>
+
+  <text class="footer-tip">单机本地记分 · 适度游戏，注意休息</text>
+</view>

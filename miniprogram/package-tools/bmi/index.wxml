@@ -1,0 +1,16 @@
+<view class="page {{themeClass}}">
+  <health-disclaimer themeClass="{{themeClass}}" />
+  <view class="field">
+    <text class="label">身高（厘米）</text>
+    <input class="input" type="digit" placeholder="例如 175" value="{{heightCm}}" bindinput="onHeight" />
+  </view>
+  <view class="field">
+    <text class="label">体重（千克）</text>
+    <input class="input" type="digit" placeholder="例如 68" value="{{weightKg}}" bindinput="onWeight" />
+  </view>
+
+  <view class="card">
+    <text class="bmi">{{bmiText}}</text>
+    <text wx:if="{{level}}" class="level">{{level}}</text>
+  </view>
+</view>

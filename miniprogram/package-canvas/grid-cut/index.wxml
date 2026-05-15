@@ -1,0 +1,26 @@
+<view class="page {{themeClass}}">
+  <button class="primary" bindtap="onPick" disabled="{{busy}}">选择图片</button>
+  <image
+    wx:if="{{imagePath}}"
+    class="thumb"
+    style="{{thumbStyle}}"
+    src="{{imagePath}}"
+    mode="aspectFit"
+  />
+  <text class="tip" wx:if="{{imagePath}}">将按 3×3 均分，依次保存 9 张到相册</text>
+  <button
+    class="ghost"
+    bindtap="onCutSave"
+    disabled="{{!imagePath || busy}}"
+    loading="{{busy}}"
+  >
+    切成九张并保存
+  </button>
+
+  <canvas
+    canvas-id="gridCanvas"
+    class="hidden-canvas"
+    style="width: 400px; height: 400px;"
+    disable-scroll="true"
+  />
+</view>

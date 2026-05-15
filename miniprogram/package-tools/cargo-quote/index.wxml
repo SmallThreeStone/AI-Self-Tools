@@ -1,0 +1,147 @@
+<scroll-view class="page {{themeClass}}" scroll-y style="height: 100vh;">
+  <view class="card">
+    <view class="card-title">1) 柜型设置</view>
+    <view class="row">
+      <text class="label">柜型</text>
+      <picker mode="selector" range="{{containerTypeLabels}}" value="{{containerTypeIndex}}" bindchange="onContainerTypeChange">
+        <view class="picker-value">{{containerTypeLabels[containerTypeIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <text class="label">体积上限(m³)</text>
+      <input class="input input-num" type="digit" value="{{currentMaxVolume}}" bindinput="onMaxVolumeInput" />
+    </view>
+    <view class="row">
+      <text class="label">重量上限(kg)</text>
+      <input class="input input-num" type="number" value="{{currentMaxWeight}}" bindinput="onMaxWeightInput" />
+    </view>
+    <view class="meta">{{containerMeta}}</view>
+  </view>
+
+  <view class="card">
+    <view class="row row-between">
+      <view class="card-title tight">2) 产品库（可编辑）</view>
+      <button class="btn-sm" size="mini" bindtap="toggleProductLib">{{productLibExpanded ? '收起' : '展开'}}</button>
+    </view>
+    <view class="tip">重量规则：默认按容量估算（1L≈1kg×每箱装数）。有准确毛重时填写「每箱毛重」覆盖。</view>
+    <block wx:if="{{productLibExpanded}}">
+      <button class="btn-primary" bindtap="onAddProduct">新增产品</button>
+      <view class="row">
+        <text class="label">模糊搜索</text>
+        <input class="input flex1" placeholder="产品名/规格" value="{{productKw}}" bindinput="onProductKw" />
+      </view>
+      <view class="row">
+        <text class="label">分类</text>
+        <picker mode="selector" range="{{productCatLabels}}" value="{{productCatIndex}}" bindchange="onProductCatChange">
+          <view class="picker-value flex1">{{productCatLabels[productCatIndex]}}</view>
+        </picker>
+      </view>
+      <scroll-view class="product-scroll" scroll-y>
+        <block wx:for="{{displayProducts}}" wx:key="id">
+          <view class="product-card">
+            <view class="product-name">{{item.name}} {{item.spec}}</view>
+            <view class="field">
+              <text class="field-label">产品名</text>
+              <input class="input" value="{{item.name}}" data-id="{{item.id}}" data-field="name" bindinput="onProductField" />
+            </view>
+            <view class="field">
+              <text class="field-label">规格</text>
+              <input class="input" value="{{item.spec}}" data-id="{{item.id}}" data-field="spec" bindinput="onProductField" />
+            </view>
+            <view class="field">
+              <text class="field-label">容量(L)</text>
+              <input class="input" type="digit" value="{{item.capacityL}}" data-id="{{item.id}}" data-field="capacityL" bindinput="onProductField" />
+            </view>
+            <view class="field">
+              <text class="field-label">每箱装数</text>
+              <input class="input" type="number" value="{{item.pcsPerCarton}}" data-id="{{item.id}}" data-field="pcsPerCarton" bindinput="onProductField" />
+            </view>
+            <view class="field">
+              <text class="field-label">箱规(cm)</text>
+              <input class="input" value="{{item.sizeCm}}" data-id="{{item.id}}" data-field="sizeCm" bindinput="onProductField" />
+            </view>
+            <view class="field">
+              <text class="field-label">每箱毛重(kg)</text>
+              <input class="input" type="digit" placeholder="可选" value="{{item.cartonGrossWeightKg != null ? item.cartonGrossWeightKg : ''}}" data-id="{{item.id}}" data-field="cartonGrossWeightKg" bindinput="onProductField" />
+            </view>
+            <button class="btn-danger-sm" size="mini" data-id="{{item.id}}" bindtap="onDeleteProduct">删除</button>
+          </view>
+        </block>
+        <view wx:if="{{!displayProducts.length}}" class="meta">未找到符合条件的产品。</view>
+      </scroll-view>
+    </block>
+  </view>
+
+  <view class="card">
+    <view class="card-title">3) 单品装柜试算</view>
+    <view class="row">
+      <text class="label">模糊搜索</text>
+      <input class="input flex1" placeholder="产品名/规格" value="{{singleKw}}" bindinput="onSingleKw" />
+    </view>
+    <view class="row">
+      <text class="label">分类</text>
+      <picker mode="selector" range="{{singleCatLabels}}" value="{{singleCatIndex}}" bindchange="onSingleCatChange">
+        <view class="picker-value flex1">{{singleCatLabels[singleCatIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row" wx:if="{{singleOptions.length}}">
+      <text class="label">产品</text>
+      <picker mode="selector" range="{{singleOptions}}" range-key="label" value="{{singleOptionIndex}}" bindchange="onSingleProductChange">
+        <view class="picker-value flex1">{{singleOptions[singleOptionIndex].label}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <text class="label">计划箱数</text>
+      <input class="input input-num" type="number" value="{{singleCartons}}" bindinput="onSingleCartons" />
+    </view>
+    <view class="result {{singleFit ? 'result-ok' : 'result-bad'}}">
+      <block wx:for="{{singleResultLines}}" wx:key="*this">
+        <text class="result-line">{{item}}</text>
+      </block>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">4) 混装计算器（A+B+…）</view>
+    <view class="row">
+      <text class="label">模糊搜索</text>
+      <input class="input flex1" placeholder="产品名/规格" value="{{mixKw}}" bindinput="onMixKw" />
+    </view>
+    <view class="row">
+      <text class="label">分类</text>
+      <picker mode="selector" range="{{mixCatLabels}}" value="{{mixCatIndex}}" bindchange="onMixCatChange">
+        <view class="picker-value flex1">{{mixCatLabels[mixCatIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row-actions">
+      <button class="btn-primary" size="mini" bindtap="onAddMixLine">新增混装行</button>
+      <button class="btn-primary" size="mini" bindtap="onCalcMix">计算混装结果</button>
+    </view>
+    <block wx:if="{{mixProductLabels.length}}">
+      <block wx:for="{{mixLines}}" wx:key="id">
+        <view class="mix-line">
+          <picker mode="selector" range="{{mixProductLabels}}" value="{{item.mixProductIndex}}" data-line-id="{{item.id}}" bindchange="onMixLineProductChange">
+            <view class="picker-value mix-picker">{{mixProductLabels[item.mixProductIndex]}}</view>
+          </picker>
+          <input class="input mix-cartons" type="number" placeholder="箱数" value="{{item.cartons}}" data-line-id="{{item.id}}" bindinput="onMixLineCartons" />
+          <button class="btn-danger-sm" size="mini" data-line-id="{{item.id}}" bindtap="onRemoveMixLine">移除</button>
+        </view>
+      </block>
+    </block>
+    <view wx:else class="meta">当前筛选下无产品，请调整搜索或分类。</view>
+    <view class="result {{mixPending ? '' : (mixFit ? 'result-ok' : 'result-bad')}}">
+      <block wx:for="{{mixResultLines}}" wx:key="*this">
+        <text class="result-line">{{item}}</text>
+      </block>
+    </view>
+  </view>
+
+  <view class="card card-last">
+    <view class="card-title">5) 报价摘要导出</view>
+    <view class="row-actions">
+      <button class="btn-primary" size="mini" bindtap="onBuildQuote">生成报价摘要</button>
+      <button class="btn-primary" size="mini" bindtap="onCopyQuote">复制摘要</button>
+    </view>
+    <textarea class="quote-area" placeholder="生成后可复制发送" value="{{quoteText}}" auto-height />
+  </view>
+</scroll-view>

@@ -1,0 +1,15 @@
+<view class="page {{themeClass}}">
+  <view class="field">
+    <text class="label">原价（元）</text>
+    <input class="input" type="digit" placeholder="例如 199" value="{{price}}" bindinput="onPrice" />
+  </view>
+  <view class="field">
+    <text class="label">折扣（%  OFF）</text>
+    <input class="input" type="digit" placeholder="例如 30 表示 7 折" value="{{discount}}" bindinput="onDiscount" />
+  </view>
+
+  <view class="result">
+    <text class="line">实付：¥ {{finalPrice}}</text>
+    <text class="line sub">节省：¥ {{saved}}</text>
+  </view>
+</view>

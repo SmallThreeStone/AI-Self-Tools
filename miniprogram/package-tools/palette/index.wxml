@@ -1,0 +1,33 @@
+<view class="page {{themeClass}}">
+  <view class="swatch" style="background-color: {{hex}}" />
+
+  <text class="hex">{{hex}}</text>
+  <view class="row">
+    <button class="mini primary" bindtap="onCopy">复制色值</button>
+    <button class="mini" bindtap="onSaveFav">收藏</button>
+  </view>
+
+  <view class="sliders">
+    <text class="lab">色相 H {{h}}</text>
+    <slider min="0" max="360" value="{{h}}" bindchanging="onH" bindchange="onH" activeColor="#1677ff" />
+    <text class="lab">饱和度 S {{s}}</text>
+    <slider min="0" max="100" value="{{s}}" bindchanging="onS" bindchange="onS" />
+    <text class="lab">亮度 L {{l}}</text>
+    <slider min="0" max="100" value="{{l}}" bindchanging="onL" bindchange="onL" />
+  </view>
+
+  <view class="fav-block" wx:if="{{favorites.length}}">
+    <text class="fav-title">收藏</text>
+    <view class="fav-list">
+      <view wx:for="{{favorites}}" wx:key="*this" class="fav-item">
+        <view
+          class="fav-dot"
+          style="background-color: {{item}}"
+          data-hex="{{item}}"
+          bindtap="onPickFav"
+        />
+        <text class="fav-x" data-hex="{{item}}" catchtap="onRemoveFav">×</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,34 @@
+<view class="page {{themeClass}}">
+  <view class="toolbar">
+    <text class="lab">颜色</text>
+    <view
+      class="dot blue {{color === '#1677ff' ? 'on' : ''}}"
+      data-color="#1677ff"
+      bindtap="onColor"
+    />
+    <view
+      class="dot black {{color === '#222222' ? 'on' : ''}}"
+      data-color="#222222"
+      bindtap="onColor"
+    />
+    <view
+      class="dot red {{color === '#ff4d4f' ? 'on' : ''}}"
+      data-color="#ff4d4f"
+      bindtap="onColor"
+    />
+    <button class="mini plain" size="mini" bindtap="onClear">清空</button>
+  </view>
+
+  <canvas
+    canvas-id="wbCanvas"
+    class="board"
+    style="{{canvasStyle}}"
+    disable-scroll="true"
+    bindtouchstart="touchStart"
+    bindtouchmove="touchMove"
+    bindtouchend="touchEnd"
+  />
+
+  <button class="primary" bindtap="onSave">保存到相册</button>
+  <text class="hint">在画布上滑动绘制；清空后背景为白色便于导出。</text>
+</view>

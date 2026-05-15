@@ -1,0 +1,17 @@
+<view class="page {{themeClass}}">
+  <view class="form">
+    <input class="inp" placeholder="事件名称" value="{{titleIn}}" bindinput="onTitle" />
+    <input class="inp" placeholder="目标日期 YYYY-MM-DD" value="{{dateIn}}" bindinput="onDate" />
+    <button class="primary" bindtap="onAdd">添加</button>
+  </view>
+  <scroll-view class="list" scroll-y>
+    <view wx:for="{{rows}}" wx:key="id" class="card">
+      <view class="meta">
+        <text class="t">{{item.title}}</text>
+        <text class="d">{{item.date}}</text>
+      </view>
+      <text class="lab">{{item.label}}</text>
+      <text class="del" data-id="{{item.id}}" bindtap="onDel">删除</text>
+    </view>
+  </scroll-view>
+</view>

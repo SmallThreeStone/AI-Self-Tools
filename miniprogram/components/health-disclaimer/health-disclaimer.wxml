@@ -1,0 +1,9 @@
+<view wx:if="{{!dismissed}}" class="wrap {{themeClass}}">
+  <view class="inner">
+    <text class="text">
+      本工具结果仅供日常参考，均为估算值，不构成医疗建议、诊断或治疗依据；如有健康问题请咨询正规医疗机构。
+    </text>
+    <text wx:if="{{extra}}" class="text extra">{{extra}}</text>
+    <text class="close" bindtap="onDismiss">知道了</text>
+  </view>
+</view>

@@ -1,0 +1,17 @@
+<view class="page {{themeClass}}">
+  <view class="card">
+    <text class="label">英文例句</text>
+    <textarea
+      class="area"
+      placeholder="必填"
+      maxlength="800"
+      value="{{textEn}}"
+      bindinput="onEn"
+    />
+    <text class="label">中文参考译（选填）</text>
+    <input class="field" placeholder="选填" maxlength="400" value="{{textZh}}" bindinput="onZh" />
+    <text class="label">备注（选填）</text>
+    <input class="field" placeholder="如：来自某客户邮件" maxlength="120" value="{{note}}" bindinput="onNote" />
+  </view>
+  <button class="primary" bindtap="onSave">保存</button>
+</view>

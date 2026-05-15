@@ -1,0 +1,10 @@
+<view class="row" bindtap="onTap" bindlongpress="onLongPress">
+  <view wx:if="{{favorited}}" class="star">★</view>
+  <view class="icon-wrap">
+    <text class="emoji">{{tool.icon}}</text>
+  </view>
+  <view class="meta">
+    <text class="title">{{tool.name}}</text>
+    <text class="desc">{{tool.desc}}</text>
+  </view>
+</view>

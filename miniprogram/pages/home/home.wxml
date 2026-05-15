@@ -1,0 +1,156 @@
+<view class="page with-tab-bar {{themeClass}}">
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="名称 / 描述 / 别名（如 bmi、qr）"
+      confirm-type="search"
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearchConfirm"
+    />
+    <text wx:if="{{searchKeyword}}" class="clear" bindtap="onClearSearch">清除</text>
+  </view>
+  <text class="search-tip">常用别名：bmi · qr · wm · grid · pomodoro · split</text>
+
+  <block wx:if="{{!searchKeyword}}">
+    <scroll-view class="cat-scroll" scroll-x enable-flex>
+      <view class="cat-chips">
+        <view
+          wx:for="{{categories}}"
+          wx:key="id"
+          class="cat-chip"
+          data-id="{{item.id}}"
+          bindtap="onTapCategory"
+        >
+          <text class="cat-ico">{{item.icon}}</text>
+          <text class="cat-txt">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="section tight">
+      <text class="section-title">常用（最多 3 个）</text>
+      <view wx:if="{{pinnedTools.length}}" class="grid">
+        <tool-card-grid
+          wx:for="{{pinnedTools}}"
+          wx:key="id"
+          tool="{{item}}"
+          favorited="{{item.favorited}}"
+          bindopen="onOpenTool"
+          binddetail="onToolDetail"
+        />
+      </view>
+      <text wx:else class="empty">暂无固定。打开任意工具详情，点「固定到常用」。</text>
+    </view>
+
+    <view class="search-extra">
+      <view class="chip-row chip-row--inline">
+        <text class="chip-label chip-label--side">热搜</text>
+        <view class="chips">
+          <view
+            wx:for="{{hotLabels}}"
+            wx:key="*this"
+            class="chip"
+            data-label="{{item}}"
+            bindtap="onTapSearchChip"
+          >
+            <text class="chip-txt">{{item}}</text>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{searchHistory.length}}" class="chip-row chip-row--stack">
+        <view class="chip-head">
+          <text class="chip-label chip-label--flush">最近搜索</text>
+          <text class="chip-clear" bindtap="onClearSearchHistory">清空记录</text>
+        </view>
+        <view class="chips">
+          <view
+            wx:for="{{searchHistory}}"
+            wx:key="*this"
+            class="chip muted-chip"
+            data-label="{{item}}"
+            bindtap="onTapSearchChip"
+          >
+            <text class="chip-txt">{{item}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">我的收藏</text>
+      <view wx:if="{{favorites.length}}" class="grid">
+        <tool-card-grid
+          wx:for="{{favorites}}"
+          wx:key="id"
+          tool="{{item}}"
+          favorited="{{true}}"
+          bindopen="onOpenTool"
+          binddetail="onToolDetail"
+        />
+      </view>
+      <view wx:else class="empty">暂无收藏。长按卡片可看详情并加入收藏。</view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">最近使用</text>
+      <view wx:if="{{recent.length}}" class="grid">
+        <tool-card-grid
+          wx:for="{{recent}}"
+          wx:key="id"
+          tool="{{item}}"
+          favorited="{{item.favorited}}"
+          bindopen="onOpenTool"
+          binddetail="onToolDetail"
+        />
+      </view>
+      <view wx:else class="empty">还没有记录，点开任意工具试试</view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">猜你喜欢</text>
+      <view wx:if="{{guess.length}}" class="grid">
+        <tool-card-grid
+          wx:for="{{guess}}"
+          wx:key="id"
+          tool="{{item}}"
+          favorited="{{item.favorited}}"
+          bindopen="onOpenTool"
+          binddetail="onToolDetail"
+        />
+      </view>
+      <view wx:else class="empty">暂无推荐，多试试不同工具吧</view>
+    </view>
+  </block>
+
+  <block wx:elif="{{searchKeyword}}">
+    <view class="section">
+      <text class="section-title">搜索结果</text>
+      <view class="grid">
+        <tool-card-grid
+          wx:for="{{filteredTools}}"
+          wx:key="id"
+          tool="{{item}}"
+          favorited="{{item.favorited}}"
+          bindopen="onOpenFromSearch"
+          binddetail="onToolDetail"
+        />
+      </view>
+    </view>
+  </block>
+
+  <tool-detail-sheet
+    visible="{{detailVisible}}"
+    tool="{{detailTool}}"
+    favorited="{{detailFavorited}}"
+    pinned="{{detailPinned}}"
+    showPin="{{true}}"
+    tagLine="{{detailTagLine}}"
+    permissionText="{{detailPermissionText}}"
+    lastUsedText="{{detailLastUsedText}}"
+    bindclose="onCloseDetail"
+    bindopen="onDetailOpen"
+    bindtogglefav="onDetailToggleFav"
+    bindtogglepin="onDetailTogglePin"
+  />
+</view>

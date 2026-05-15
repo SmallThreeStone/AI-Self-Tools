@@ -1,0 +1,32 @@
+<view class="page {{themeClass}}">
+  <health-disclaimer
+    themeClass="{{themeClass}}"
+    extra="屏幕刻度仅为日常估算辅助，不能替代法定计量器具，请勿用于贸易结算或精密测量。"
+  />
+  <view wx:if="{{!calibrated}}" class="calib">
+    <text class="hint">将银行卡长边贴近屏幕，拖动滑块使下方白条宽度与卡片一致，再点保存校准。</text>
+    <view class="card-bar-wrap">
+      <view class="card-bar" style="width: {{barPx}}px" />
+    </view>
+    <slider min="80" max="400" value="{{barPx}}" bindchanging="onBarPx" bindchange="onBarPx" show-value />
+    <button class="primary" bindtap="onCalibrate">保存校准</button>
+  </view>
+
+  <view wx:else class="active">
+    <text class="meta">建议横屏并将刻度线贴近被测物体，测量更稳定。以下为估算长度。</text>
+    <view class="track-wrap">
+      <view class="track">
+        <view
+          wx:for="{{ticks}}"
+          wx:for-index="idx"
+          wx:key="idx"
+          class="tick {{item.major ? 'major' : ''}}"
+          style="left: {{item.left}}%"
+        >
+          <text wx:if="{{item.label}}" class="lbl">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+    <button class="ghost" bindtap="onReset">重新校准</button>
+  </view>
+</view>

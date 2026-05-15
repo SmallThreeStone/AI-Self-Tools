@@ -1,0 +1,16 @@
+<view class="page {{themeClass}}">
+  <view class="hero">
+    <text class="name">{{appName}}</text>
+    <text class="ver">版本 {{version}}</text>
+  </view>
+  <text class="desc">{{desc}}</text>
+  <text class="muted block">
+    收藏、最近与使用统计仅存本机；完整备份见「我的 → 备份与恢复」。
+  </text>
+
+  <navigator class="link-card" url="/pages/dev-log/dev-log" hover-class="link-hover">
+    <text class="link-title">更新说明</text>
+    <text class="link-sub">查看功能更新日志（与发版记录同步维护）</text>
+    <text class="link-arrow">›</text>
+  </navigator>
+</view>

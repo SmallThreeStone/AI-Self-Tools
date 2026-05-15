@@ -1,0 +1,50 @@
+.wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.white {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+}
+
+.dim {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #000000;
+}
+
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24rpx 32rpx 48rpx;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.p-title {
+  display: block;
+  color: #fff;
+  font-size: 26rpx;
+  margin-bottom: 12rpx;
+}
+
+.p-tip {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+}

@@ -1,0 +1,52 @@
+.row {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: var(--surface);
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  border: 1rpx solid var(--border);
+}
+
+.star {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  font-size: 22rpx;
+  color: var(--star);
+}
+
+.icon-wrap {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 16rpx;
+  background: var(--page-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.emoji {
+  font-size: 48rpx;
+}
+
+.meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}

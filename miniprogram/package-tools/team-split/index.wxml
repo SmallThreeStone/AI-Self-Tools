@@ -1,0 +1,15 @@
+<view class="page {{themeClass}}">
+  <text class="tip">每行一个人名或昵称；随机打乱后轮流分配到各组。</text>
+  <textarea class="area" placeholder="张三&#10;李四&#10;王五" value="{{raw}}" bindinput="onNames" />
+  <picker mode="selector" range="{{groupOptions}}" value="{{groupIdx}}" bindchange="onGroupPick">
+    <view class="picker">分成 {{groups}} 组</view>
+  </picker>
+  <button class="primary" bindtap="onSplit">随机分组</button>
+
+  <block wx:if="{{resultLines.length}}">
+    <view class="result">
+      <text wx:for="{{resultLines}}" wx:key="*this" class="line">{{item}}</text>
+    </view>
+    <button class="ghost" bindtap="onCopy">复制结果</button>
+  </block>
+</view>

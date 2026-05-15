@@ -1,0 +1,42 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "projectname": "personal-toolbox",
+  "description": "自用工具箱小程序",
+  "appid": "wx268fd52a072a663b",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "minified": true,
+    "useCompilerPlugins": [
+      "typescript"
+    ],
+    "postcss": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "ignoreDevUnusedFiles": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.5.5",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
+}

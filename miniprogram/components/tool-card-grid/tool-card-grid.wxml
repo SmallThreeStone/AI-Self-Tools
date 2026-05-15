@@ -1,0 +1,5 @@
+<view class="card" bindtap="onTap" bindlongpress="onLongPress">
+  <view wx:if="{{favorited}}" class="star">★</view>
+  <text class="emoji">{{tool.icon}}</text>
+  <text class="label">{{tool.name}}</text>
+</view>

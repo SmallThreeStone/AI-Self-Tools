@@ -1,0 +1,107 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/category/category",
+    "pages/mine/mine",
+    "pages/advanced/advanced",
+    "pages/dev-log/dev-log",
+    "pages/about/about",
+    "pages/stub/stub"
+  ],
+  "subpackages": [
+    {
+      "root": "package-tools",
+      "name": "tools",
+      "pages": [
+        "bill-split/index",
+        "bmi/index",
+        "body-fat/index",
+        "coin/index",
+        "countdown/index",
+        "cargo-quote/index",
+        "danmaku/index",
+        "decision-wheel/index",
+        "discount/index",
+        "fill-light/index",
+        "memo/index",
+        "palette/index",
+        "password/index",
+        "pomodoro/index",
+        "qrcode/index",
+        "relative-calc/index",
+        "ruler/index",
+        "scoreboard/index",
+        "team-split/index",
+        "text-clean/index",
+        "truth-dare/index",
+        "unit-convert/index",
+        "wooden-fish/index",
+        "zen-clock/index"
+      ]
+    },
+    {
+      "root": "package-canvas",
+      "name": "canvas",
+      "pages": [
+        "watermark/index",
+        "text-to-image/index",
+        "grid-cut/index",
+        "whiteboard/index"
+      ]
+    },
+    {
+      "root": "package-game",
+      "name": "game",
+      "pages": ["snake/index"]
+    },
+    {
+      "root": "package-beijing",
+      "name": "beijing",
+      "pages": ["index"]
+    },
+    {
+      "root": "package-learn",
+      "name": "learn",
+      "pages": ["wordbook/index", "wordbook/detail", "wordbook/edit", "wordbook/sentence-edit"]
+    }
+  ],
+  "preloadRule": {
+    "pages/home/home": {
+      "network": "all",
+      "packages": ["tools"]
+    },
+    "pages/category/category": {
+      "network": "all",
+      "packages": ["tools"]
+    }
+  },
+  "window": {
+    "navigationBarTitleText": "工具箱",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f6f8"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#666666",
+    "selectedColor": "#1677ff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

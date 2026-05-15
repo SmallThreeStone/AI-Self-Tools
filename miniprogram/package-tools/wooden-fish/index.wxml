@@ -1,0 +1,13 @@
+<view class="page {{themeClass}}">
+  <text class="merit">{{merit}}</text>
+  <text class="sub">功德 +1</text>
+
+  <view class="fish-wrap">
+    <view class="fish {{bash ? 'bash' : ''}}" bindtap="onTap">
+      <text class="emoji">🐟</text>
+    </view>
+  </view>
+
+  <text class="hint">轻触鱼身敲击；功德本地保存仅作娱乐。</text>
+  <button class="ghost" bindtap="onReset">清零</button>
+</view>

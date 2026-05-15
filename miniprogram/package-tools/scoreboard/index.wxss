@@ -1,0 +1,55 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+}
+
+.row {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 32rpx;
+}
+
+.half {
+  flex: 1;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid var(--border);
+  background: var(--surface);
+  text-align: center;
+}
+
+.team {
+  width: 100%;
+  text-align: center;
+  font-size: 28rpx;
+  margin-bottom: 16rpx;
+}
+
+.num {
+  display: block;
+  font-size: 72rpx;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 20rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  gap: 16rpx;
+}
+
+.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1rpx solid var(--accent);
+}
+
+.tip {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  margin-top: 24rpx;
+}

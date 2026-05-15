@@ -1,0 +1,22 @@
+<view class="page {{themeClass}}">
+  <view class="row">
+    <view class="half">
+      <input class="team" value="{{nameA}}" bindinput="onNameA" />
+      <text class="num">{{scoreA}}</text>
+      <view class="btns">
+        <button size="mini" bindtap="subA">-</button>
+        <button size="mini" type="primary" bindtap="addA">+</button>
+      </view>
+    </view>
+    <view class="half">
+      <input class="team" value="{{nameB}}" bindinput="onNameB" />
+      <text class="num">{{scoreB}}</text>
+      <view class="btns">
+        <button size="mini" bindtap="subB">-</button>
+        <button size="mini" type="primary" bindtap="addB">+</button>
+      </view>
+    </view>
+  </view>
+  <button class="ghost" bindtap="onReset">分数归零</button>
+  <text class="tip">队名与分数自动保存在本机。</text>
+</view>

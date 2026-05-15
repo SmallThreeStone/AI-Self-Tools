@@ -1,0 +1,10 @@
+<view class="wrap {{themeClass}}" bindtap="onTapStage">
+  <view class="white" />
+  <view class="dim" style="opacity: {{dim}}" />
+
+  <view class="panel" wx:if="{{showPanel}}" catchtap="noop">
+    <text class="p-title">亮度遮罩（滑动调暗模拟柔光）</text>
+    <slider value="{{dimPercent}}" min="0" max="85" bindchanging="onDim" bindchange="onDim" />
+    <text class="p-tip">点击空白处隐藏/显示面板；系统亮度请在控制中心调节。</text>
+  </view>
+</view>

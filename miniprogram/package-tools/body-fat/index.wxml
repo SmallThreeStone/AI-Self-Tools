@@ -1,0 +1,47 @@
+<view class="page {{themeClass}}">
+  <health-disclaimer themeClass="{{themeClass}}" />
+  <view class="field">
+    <text class="label">体重（kg）</text>
+    <input class="input" type="digit" value="{{weight}}" bindinput="onWeight" bindblur="onCalc" />
+  </view>
+  <view class="field">
+    <text class="label">身高（cm）</text>
+    <input class="input" type="digit" value="{{height}}" bindinput="onHeight" bindblur="onCalc" />
+  </view>
+  <view class="field">
+    <text class="label">年龄</text>
+    <input class="input" type="number" value="{{age}}" bindinput="onAge" bindblur="onCalc" />
+  </view>
+
+  <view class="field">
+    <text class="label">性别</text>
+    <view class="seg">
+      <button class="seg-btn {{male ? 'on' : ''}}" bindtap="onGenderMale">男</button>
+      <button class="seg-btn {{!male ? 'on' : ''}}" bindtap="onGenderFemale">女</button>
+    </view>
+  </view>
+
+  <view class="field">
+    <text class="label">日常活动量</text>
+    <view class="tags">
+      <text
+        wx:for="{{activityLabels}}"
+        wx:key="*this"
+        class="tag {{activityIdx === index ? 'on' : ''}}"
+        data-idx="{{index}}"
+        bindtap="onActivity"
+      >
+        {{item}}
+      </text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="k">基础代谢（BMR）</text>
+    <text class="v">{{bmrText}} <text class="unit">kcal/日</text></text>
+    <text class="k row2">估算总消耗（TDEE）</text>
+    <text class="v">{{tdeeText}} <text class="unit">kcal/日</text></text>
+  </view>
+
+  <text class="foot">{{hint}}</text>
+</view>

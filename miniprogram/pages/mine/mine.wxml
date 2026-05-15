@@ -1,0 +1,69 @@
+<view class="page with-tab-bar {{themeClass}}">
+  <view class="card">
+    <text class="card-title">外观</text>
+    <text class="muted block-gap">当前策略：<text class="strong">{{themePrefLabel}}</text>（浅色 / 深色为手动固定）</text>
+    <view class="theme-row">
+      <button
+        class="theme-btn {{themePrefLabel === '跟随系统' ? 'on' : ''}}"
+        size="mini"
+        data-pref="system"
+        bindtap="onPickThemePref"
+      >
+        跟随系统
+      </button>
+      <button
+        class="theme-btn {{themePrefLabel === '浅色' ? 'on' : ''}}"
+        size="mini"
+        data-pref="light"
+        bindtap="onPickThemePref"
+      >
+        浅色
+      </button>
+      <button
+        class="theme-btn {{themePrefLabel === '深色' ? 'on' : ''}}"
+        size="mini"
+        data-pref="dark"
+        bindtap="onPickThemePref"
+      >
+        深色
+      </button>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="card-title">常用</text>
+    <navigator class="nav-row" url="/pages/home/home" open-type="switchTab" hover-class="nav-hover">
+      <text class="nav-label">首页 · 收藏与固定工具</text>
+      <text class="nav-arrow">›</text>
+    </navigator>
+    <text class="muted footnote-small">在首页管理收藏、常用置顶与搜索。</text>
+  </view>
+
+  <view class="card">
+    <navigator class="nav-row" url="/pages/advanced/advanced" hover-class="nav-hover">
+      <text class="nav-label strong-inline">高级选项</text>
+      <text class="nav-arrow">›</text>
+    </navigator>
+    <text class="muted footnote-small">备份与恢复、使用统计、隐私说明与清除数据</text>
+  </view>
+
+  <view class="card">
+    <text class="card-title">关于与版本</text>
+    <navigator class="nav-row" url="/pages/about/about" hover-class="nav-hover">
+      <text class="nav-label">关于</text>
+      <text class="nav-arrow">›</text>
+    </navigator>
+    <navigator class="nav-row" url="/pages/dev-log/dev-log" hover-class="nav-hover">
+      <text class="nav-label">功能更新日志</text>
+      <text class="nav-arrow">›</text>
+    </navigator>
+  </view>
+
+  <view class="card">
+    <text class="card-title">反馈与投诉</text>
+    <text class="muted block-gap">遇到问题或对小程序有建议，可通过微信官方反馈入口提交（由微信平台处理）。</text>
+    <button class="ghost feedback-btn" open-type="feedback">打开反馈</button>
+  </view>
+
+  <view class="footer muted">{{appName}} {{appVersion}} · 数据仅存本机</view>
+</view>

@@ -1,0 +1,26 @@
+page {
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.theme-light {
+  --page-bg: #f5f6f8;
+  --surface: #ffffff;
+  --text-primary: #1f1f1f;
+  --text-secondary: #8c8c8c;
+  --border: #ebebeb;
+  --accent: #1677ff;
+  --star: #faad14;
+}
+
+.theme-dark {
+  --page-bg: #141414;
+  --surface: #1f1f1f;
+  --text-primary: #f0f0f0;
+  --text-secondary: #a3a3a3;
+  --border: #303030;
+  --accent: #4096ff;
+  --star: #faad14;
+}

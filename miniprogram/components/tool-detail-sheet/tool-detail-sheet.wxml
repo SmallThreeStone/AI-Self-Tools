@@ -1,0 +1,22 @@
+<view wx:if="{{visible}}" class="mask" catchtouchmove="noop" bindtap="onMaskTap">
+  <view class="sheet theme-sheet" catchtap="noop">
+    <text class="emoji">{{tool.icon}}</text>
+    <text class="name">{{tool.name}}</text>
+    <text class="desc">{{tool.desc}}</text>
+    <text wx:if="{{tagLine}}" class="tags">标签：{{tagLine}}</text>
+    <text class="perm">{{permissionText}}</text>
+    <text wx:if="{{lastUsedText}}" class="last">上次使用：{{lastUsedText}}</text>
+    <text class="hint">长按卡片可打开本面板；点击空白处关闭。</text>
+
+    <view class="btn-row">
+      <button class="btn primary" bindtap="onOpen">打开工具</button>
+    </view>
+    <view class="btn-row dual">
+      <button class="btn ghost" bindtap="onToggleFav">{{favorited ? '取消收藏' : '加入收藏'}}</button>
+      <button wx:if="{{showPin}}" class="btn ghost" bindtap="onTogglePin">
+        {{pinned ? '取消固定' : '固定到常用'}}
+      </button>
+    </view>
+    <text class="close-link" bindtap="onClose">关闭</text>
+  </view>
+</view>

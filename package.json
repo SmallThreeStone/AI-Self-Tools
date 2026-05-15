@@ -1,0 +1,11 @@
+{
+  "name": "personal-toolbox-miniprogram",
+  "private": true,
+  "devDependencies": {
+    "miniprogram-api-typings": "^4.1.0",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "uqrcodejs": "^4.0.7"
+  }
+}

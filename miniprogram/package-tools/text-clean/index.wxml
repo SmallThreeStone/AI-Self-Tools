@@ -1,0 +1,14 @@
+<view class="page {{themeClass}}">
+  <text class="tip">仅在本地处理，不上传；适合粘贴前整理格式。</text>
+  <textarea class="area" placeholder="粘贴或输入文本" value="{{raw}}" bindinput="onInput" />
+  <view class="stats">
+    <text>行数 {{lines}}</text>
+    <text>字符 {{chars}}</text>
+    <text>非空白 {{nonSpace}}</text>
+  </view>
+  <view class="row">
+    <button class="btn ghost" bindtap="onTrimEnds">去首尾空白</button>
+    <button class="btn ghost" bindtap="onCollapseSpace">压缩多空格</button>
+  </view>
+  <button class="btn danger" bindtap="onClear">清空</button>
+</view>

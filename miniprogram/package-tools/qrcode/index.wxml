@@ -1,0 +1,20 @@
+<view class="page {{themeClass}}">
+  <textarea
+    class="area"
+    placeholder="输入文本或链接"
+    value="{{content}}"
+    maxlength="1024"
+    bindinput="onInput"
+  />
+
+  <button class="primary" bindtap="onGenerate">生成二维码</button>
+
+  <canvas
+    canvas-id="qrCanvas"
+    class="qr"
+    style="{{canvasStyle}}"
+    disable-scroll="true"
+  />
+
+  <button class="ghost" bindtap="onSave" disabled="{{!hasImage}}">保存图片到相册</button>
+</view>

@@ -1,0 +1,6 @@
+<view class="page {{themeClass}}">
+  <view class="coin {{flipping ? 'spin' : ''}}">🪙</view>
+  <text wx:if="{{result}}" class="result">{{result}}</text>
+  <text wx:else class="hint">点击下方按钮投掷</text>
+  <button class="btn primary" bindtap="onFlip" loading="{{flipping}}">掷硬币</button>
+</view>

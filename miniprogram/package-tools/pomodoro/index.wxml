@@ -1,0 +1,22 @@
+<view class="page {{themeClass}}">
+  <text class="clock">{{timeText}}</text>
+  <text class="label">{{label}}</text>
+  <text class="sys-hint">
+    受微信与系统限制，小程序切入后台后计时可能暂停或不准；结束时会尝试震动提示，不能保证后台闹钟。
+  </text>
+
+  <picker
+    mode="selector"
+    range="{{presetLabels}}"
+    value="{{presetIndex}}"
+    bindchange="onMinutesChange"
+    disabled="{{running}}"
+  >
+    <view class="picker">时长：{{minutes}} 分钟</view>
+  </picker>
+
+  <view class="actions">
+    <button class="btn primary" bindtap="onToggle">{{running ? '暂停' : '开始'}}</button>
+    <button class="btn ghost" bindtap="onReset" disabled="{{running}}">重置</button>
+  </view>
+</view>

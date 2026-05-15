@@ -1,0 +1,7 @@
+<view class="page {{themeClass}}">
+  <view class="clock-wrap">
+    <text class="time">{{time}}</text>
+    <text class="date">{{date}}</text>
+  </view>
+  <text class="hint">横屏放置可作桌面钟；锁屏时间请使用系统设置。</text>
+</view>

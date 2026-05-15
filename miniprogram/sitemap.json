@@ -1,0 +1,9 @@
+{
+  "desc": "自用工具箱，默认关闭索引",
+  "rules": [
+    {
+      "action": "disallow",
+      "page": "*"
+    }
+  ]
+}

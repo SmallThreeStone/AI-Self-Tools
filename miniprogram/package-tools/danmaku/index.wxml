@@ -1,0 +1,42 @@
+<view class="page {{themeClass}}">
+  <view class="presets">
+    <text class="presets-label">预设</text>
+    <view class="preset-chips">
+      <text
+        wx:for="{{presets}}"
+        wx:key="*this"
+        class="preset-chip"
+        data-t="{{item}}"
+        bindtap="onPreset"
+      >
+        {{item}}
+      </text>
+    </view>
+  </view>
+  <input class="inp" placeholder="弹幕文字" value="{{text}}" bindinput="onText" />
+  <view class="row">
+    <text class="lab">字号 {{fontSize}}</text>
+    <slider min="24" max="120" value="{{fontSize}}" bindchange="onFontSize" />
+  </view>
+  <view class="row">
+    <text class="lab">滚动 {{dur}} 秒/趟</text>
+    <slider min="4" max="24" value="{{dur}}" bindchange="onDur" />
+  </view>
+  <view class="toggles">
+    <button size="mini" bindtap="onRotate">{{rotate ? '横向' : '竖屏大字'}}</button>
+    <button size="mini" bindtap="onToggleBg">{{previewDark ? '浅色底' : '深色底'}}</button>
+  </view>
+
+  <view class="stage-wrap {{previewDark ? 'dark' : 'light'}} {{rotate ? 'rot' : ''}}">
+    <view class="stage">
+      <view
+        class="marquee"
+        wx:key="animKey"
+        style="font-size: {{fontSize}}rpx; animation-duration: {{dur}}s;"
+      >
+        {{text}}
+      </view>
+    </view>
+  </view>
+  <text class="tip">提示：亮屏常显时可压低系统亮度；竖屏模式便于举牌。</text>
+</view>

@@ -1,0 +1,39 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx;
+  background: radial-gradient(ellipse at center, rgba(22, 119, 255, 0.08), transparent 60%);
+}
+
+.clock-wrap {
+  text-align: center;
+}
+
+.time {
+  display: block;
+  font-size: 96rpx;
+  font-weight: 300;
+  letter-spacing: 8rpx;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.date {
+  display: block;
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+}
+
+.hint {
+  position: fixed;
+  bottom: 48rpx;
+  left: 32rpx;
+  right: 32rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}

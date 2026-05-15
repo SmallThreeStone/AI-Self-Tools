@@ -1,0 +1,46 @@
+<view class="page with-tab-bar {{themeClass}}">
+  <view class="layout">
+    <scroll-view class="sidebar" scroll-y>
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="cat-item {{activeId === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onSelectCat"
+      >
+        <text class="cat-icon">{{item.icon}}</text>
+        <text class="cat-name">{{item.name}}</text>
+      </view>
+    </scroll-view>
+
+    <scroll-view class="main" scroll-y>
+      <view class="main-head">
+        <text class="main-title">{{categoryTitle}}</text>
+        <text class="main-count">{{toolCount}} 个工具</text>
+      </view>
+      <tool-row-card
+        wx:for="{{list}}"
+        wx:key="id"
+        tool="{{item}}"
+        favorited="{{item.favorited}}"
+        bindopen="onOpen"
+        binddetail="onToolDetail"
+      />
+    </scroll-view>
+  </view>
+
+  <tool-detail-sheet
+    visible="{{detailVisible}}"
+    tool="{{detailTool}}"
+    favorited="{{detailFavorited}}"
+    pinned="{{detailPinned}}"
+    showPin="{{true}}"
+    tagLine="{{detailTagLine}}"
+    permissionText="{{detailPermissionText}}"
+    lastUsedText="{{detailLastUsedText}}"
+    bindclose="onCloseDetail"
+    bindopen="onDetailOpen"
+    bindtogglefav="onDetailToggleFav"
+    bindtogglepin="onDetailTogglePin"
+  />
+</view>

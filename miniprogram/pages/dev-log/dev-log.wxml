@@ -1,0 +1,24 @@
+<view class="page {{themeClass}}">
+  <text class="hint">{{hint}}</text>
+
+  <scroll-view class="scroll" scroll-y>
+    <view class="timeline">
+      <view wx:for="{{entries}}" wx:key="id" class="tl-block">
+        <view class="tl-axis">
+          <view class="tl-dot" />
+          <view wx:if="{{!item.isLast}}" class="tl-line" />
+        </view>
+        <view class="tl-card">
+          <view class="tl-head">
+            <text class="tl-date">{{item.date}}</text>
+            <text wx:if="{{item.tag}}" class="tl-tag">{{item.tag}}</text>
+          </view>
+          <view wx:for="{{item.items}}" wx:for-item="line" wx:key="*this" class="tl-item">
+            <text class="bullet">·</text>
+            <text class="tl-text">{{line}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,119 @@
+<view class="page {{themeClass}}" wx:if="{{loaded}}">
+  <view class="card head-card">
+    <view class="title-row">
+      <view class="headword-line">
+        <block wx:for="{{headSegs}}" wx:for-item="seg" wx:for-index="si" wx:key="si">
+          <text class="{{seg.hit ? 'hi' : ''}}">{{seg.t}}</text>
+        </block>
+      </view>
+      <view class="title-actions">
+        <text class="star-lg" bindtap="onToggleFavorite">{{favorited ? '★' : '☆'}}</text>
+        <text wx:if="{{isUser}}" class="badge">我的</text>
+      </view>
+    </view>
+    <text wx:if="{{overridesBuiltin}}" class="override-tip">已用您的释义覆盖同词头的内置词条</text>
+    <text wx:if="{{phonetic}}" class="phonetic">{{phonetic}}</text>
+    <view class="zh-line">
+      <block wx:for="{{zhSegs}}" wx:for-item="seg" wx:for-index="zi" wx:key="zi">
+        <text class="{{seg.hit ? 'hi' : ''}}">{{seg.t}}</text>
+      </block>
+    </view>
+    <view wx:if="{{isUser}}" class="user-actions">
+      <button class="ghost sm" size="mini" bindtap="onEdit">编辑</button>
+      <button class="danger sm" size="mini" bindtap="onDelete">删除</button>
+    </view>
+    <view class="word-tts-row">
+      <button
+        class="play-btn"
+        size="mini"
+        loading="{{wordTts === 'loading'}}"
+        disabled="{{wordTts === 'loading'}}"
+        bindtap="onPlayWord"
+      >
+        {{wordTts === 'playing' ? '重播单词' : wordTts === 'failed' ? '重试单词' : '播放单词读音'}}
+      </button>
+      <text wx:if="{{wordTts === 'playing'}}" class="tts-hint">播放中</text>
+    </view>
+  </view>
+
+  <view wx:if="{{exWarnBanner}}" class="warn-banner">
+    <text class="warn-txt">我的例句较多（超过 50 条），可能影响加载与滚动体验。</text>
+    <text class="warn-dismiss" bindtap="onDismissExWarn">知道了</text>
+  </view>
+
+  <view class="section-head">
+    <text class="section-title">例句</text>
+    <text class="add-link" bindtap="onAddSentence">+ 添加例句</text>
+  </view>
+
+  <block wx:if="{{hasBuiltinExamples}}">
+    <text class="group-label">内置例句</text>
+    <view wx:for="{{builtinExVm}}" wx:for-item="ex" wx:key="bi" class="card ex-card">
+      <view class="ex-body">
+        <view class="ex-en-block">
+          <view class="ex-en">
+            <block wx:for="{{ex.textSegs}}" wx:for-item="seg" wx:for-index="ei" wx:key="ei">
+              <text class="{{seg.hit ? 'hl-word' : ''}}">{{seg.t}}</text>
+            </block>
+          </view>
+          <view
+            wx:if="{{ex.ttsReadable}}"
+            class="tts-pill {{ex.tts === 'failed' ? 'tts-fail' : ''}}"
+            catchtap="onTapSentenceTts"
+            data-kind="builtin"
+            data-bi="{{ex.bi}}"
+          >
+            <text class="tts-horn">🔊</text>
+            <text wx:if="{{ex.tts === 'loading'}}" class="tts-lbl">合成中</text>
+            <text wx:elif="{{ex.tts === 'playing'}}" class="tts-lbl">重播</text>
+            <text wx:elif="{{ex.tts === 'failed'}}" class="tts-lbl">重试</text>
+          </view>
+        </view>
+        <text wx:if="{{ex.zh_hint}}" class="ex-zh">{{ex.zh_hint}}</text>
+      </view>
+    </view>
+  </block>
+
+  <block wx:if="{{hasUserExamples}}">
+    <text class="group-label">我的例句</text>
+    <view wx:for="{{userExVm}}" wx:for-item="ex" wx:key="id" class="card ex-card user-ex">
+      <view class="ex-body">
+        <view class="ex-en-block">
+          <view class="ex-en">
+            <text wx:if="{{ex.pinned}}" class="pin-tag">置顶</text>
+            <block wx:for="{{ex.textSegs}}" wx:for-item="seg" wx:for-index="ei" wx:key="ei">
+              <text class="{{seg.hit ? 'hl-word' : ''}}">{{seg.t}}</text>
+            </block>
+          </view>
+          <view
+            wx:if="{{ex.ttsReadable}}"
+            class="tts-pill {{ex.tts === 'failed' ? 'tts-fail' : ''}}"
+            catchtap="onTapSentenceTts"
+            data-kind="user"
+            data-exid="{{ex.id}}"
+          >
+            <text class="tts-horn">🔊</text>
+            <text wx:if="{{ex.tts === 'loading'}}" class="tts-lbl">合成中</text>
+            <text wx:elif="{{ex.tts === 'playing'}}" class="tts-lbl">重播</text>
+            <text wx:elif="{{ex.tts === 'failed'}}" class="tts-lbl">重试</text>
+          </view>
+        </view>
+        <text wx:if="{{ex.textZh}}" class="ex-zh">{{ex.textZh}}</text>
+        <text wx:if="{{ex.note}}" class="ex-note">{{ex.note}}</text>
+        <view class="ex-row-btns">
+          <button class="ghost sm" size="mini" data-exid="{{ex.id}}" bindtap="onPinSentence">
+            {{ex.pinned ? '取消置顶' : '置顶'}}
+          </button>
+          <button class="ghost sm" size="mini" data-exid="{{ex.id}}" bindtap="onEditSentence">编辑</button>
+          <button class="danger sm" size="mini" data-exid="{{ex.id}}" bindtap="onDeleteSentence">删除</button>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{!hasBuiltinExamples && !hasUserExamples}}" class="card muted-card">
+    <text class="muted">暂无例句。可点击「+ 添加例句」自建英文语境。</text>
+  </view>
+
+  <text class="foot">例句与单词共用本地朗读次数额度；演示源为有道合成，整句失败时会自动缩短或读词头。纯中文句不展示朗读入口。</text>
+</view>

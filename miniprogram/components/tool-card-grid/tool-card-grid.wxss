@@ -1,0 +1,32 @@
+.card {
+  position: relative;
+  background: var(--surface);
+  border-radius: 16rpx;
+  padding: 20rpx 8rpx 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140rpx;
+  border: 1rpx solid var(--border);
+}
+
+.star {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  font-size: 22rpx;
+  color: var(--star);
+}
+
+.emoji {
+  font-size: 44rpx;
+  line-height: 1.2;
+}
+
+.label {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: var(--text-primary);
+  text-align: center;
+}

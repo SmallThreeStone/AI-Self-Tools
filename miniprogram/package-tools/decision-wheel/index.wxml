@@ -1,0 +1,9 @@
+<view class="page {{themeClass}}">
+  <text class="hint">每行一个选项，自动保存到本机。</text>
+  <textarea class="area" value="{{optionsText}}" bindinput="onOptions" />
+  <button class="primary" loading="{{spinning}}" bindtap="onSpin">开始抽取</button>
+  <view wx:if="{{result}}" class="result-box">
+    <text class="label">结果</text>
+    <text class="result">{{result}}</text>
+  </view>
+</view>

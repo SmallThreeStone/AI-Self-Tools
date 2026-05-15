@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "全部分类",
+  "usingComponents": {
+    "tool-row-card": "/components/tool-row-card/tool-row-card",
+    "tool-detail-sheet": "/components/tool-detail-sheet/tool-detail-sheet"
+  }
+}

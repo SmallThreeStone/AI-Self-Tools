@@ -1,0 +1,118 @@
+.page {
+  min-height: 100vh;
+  padding: 16rpx 24rpx 32rpx;
+}
+
+.presets {
+  margin-bottom: 16rpx;
+}
+
+.presets-label {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.preset-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.preset-chip {
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  color: var(--text-primary);
+}
+
+.inp {  border: 1rpx solid var(--border);
+  border-radius: 12rpx;
+  padding: 16rpx;
+  margin-bottom: 16rpx;
+  background: var(--surface);
+}
+
+.row {
+  margin-bottom: 12rpx;
+}
+
+.lab {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.toggles {
+  display: flex;
+  gap: 12rpx;
+  margin: 16rpx 0 20rpx;
+}
+
+.stage-wrap {
+  border-radius: 16rpx;
+  overflow: hidden;
+  border: 1rpx solid var(--border);
+  height: 280rpx;
+}
+
+.stage-wrap.dark {
+  background: #000;
+}
+
+.stage-wrap.light {
+  background: #f0f0f0;
+}
+
+.stage-wrap.rot {
+  height: 560rpx;
+}
+
+.stage-wrap.rot .stage {
+  transform: rotate(90deg);
+  width: 280rpx;
+  height: 560rpx;
+  margin: 140rpx auto;
+}
+
+.stage {
+  position: relative;
+  height: 280rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.marquee {
+  position: absolute;
+  white-space: nowrap;
+  left: 0;
+  color: #fff;
+  text-shadow: 0 0 8rpx rgba(0, 0, 0, 0.8);
+  animation-name: slide;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.stage-wrap.light .marquee {
+  color: #111;
+  text-shadow: none;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.tip {
+  display: block;
+  margin-top: 16rpx;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}

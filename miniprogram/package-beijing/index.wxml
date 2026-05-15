@@ -1,0 +1,287 @@
+<view class="page">
+  <scroll-view class="tabs" scroll-x enable-flex>
+    <view
+      wx:for="{{tabs}}"
+      wx:key="id"
+      class="tab {{activeTab === item.id ? 'tab--on' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onTabTap"
+    >
+      {{item.name}}
+    </view>
+  </scroll-view>
+
+  <!-- 首页 · 地图向导 -->
+  <scroll-view wx:if="{{activeTab === 'map'}}" class="panel panel--map" scroll-y>
+    <view class="hero">
+      <text class="hero-kicker">家人同行</text>
+      <text class="hero-title">北京向导</text>
+      <text class="hero-desc">到京后默认打开本页：先看「今日玩第几天」，再对照地图走。文字要点可离线阅读，打开地图标记需联网。</text>
+    </view>
+
+    <view class="card card--phase">
+      <text class="card-label">今天在行程第几天？（点一下切换，会自动记住）</text>
+      <scroll-view class="phase-strip" scroll-x enable-flex>
+        <view
+          wx:for="{{phaseChips}}"
+          wx:key="phase"
+          class="phase-chip {{item.active ? 'phase-chip--on' : ''}}"
+          data-phase="{{item.phase}}"
+          bindtap="onPhaseChipTap"
+        >
+          {{item.chip}}
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="card guide-card">
+      <text class="guide-head">{{guideCard.headline}}</text>
+      <text class="guide-sub">{{guideCard.sub}}</text>
+      <view wx:for="{{guideCard.bullets}}" wx:key="*this" class="guide-bullet">· {{item}}</view>
+      <button class="btn-solid" size="default" bindtap="onApplySuggestedRoutes">按今日显示地图路线</button>
+      <text class="mini tip-soft">会关闭无关折线，只留今日相关线段；长城若走慕田峪请再在下方图层里打开「慕田峪」。</text>
+    </view>
+
+    <view class="card">
+      <text class="h3">快速去这里</text>
+      <text class="mini">点按钮会跳到本页地图并放大，再点标记可打开系统地图导航。</text>
+      <scroll-view class="quick-strip" scroll-x enable-flex>
+        <button
+          wx:for="{{quickPoiChips}}"
+          wx:key="key"
+          class="quick-btn"
+          data-key="{{item.key}}"
+          bindtap="onQuickPoiTap"
+        >
+          {{item.label}}
+        </button>
+      </scroll-view>
+    </view>
+
+    <map
+      class="map"
+      longitude="{{mapLongitude}}"
+      latitude="{{mapLatitude}}"
+      scale="{{mapScale}}"
+      markers="{{markers}}"
+      polyline="{{polyline}}"
+      include-points="{{includePoints}}"
+      show-location="{{mapShowLoc}}"
+      bindmarkertap="onMarkerTap"
+    />
+
+    <view class="card">
+      <text class="h3">路线图层</text>
+      <text class="mini">开关各日折线；八达岭与慕田峪二选一即可。</text>
+      <view wx:for="{{segmentToggles}}" wx:key="id" class="seg-row">
+        <view class="seg-dot" style="background: {{item.color}}" />
+        <text class="seg-label">{{item.label}}</text>
+        <switch
+          class="seg-sw"
+          checked="{{item.checked}}"
+          data-id="{{item.id}}"
+          bindchange="onSegChange"
+        />
+      </view>
+      <view class="btn-row">
+        <button class="btn" size="mini" bindtap="onFitAll">视野含全部点</button>
+        <button class="btn btn--ghost" size="mini" bindtap="onFitCity">只看市区</button>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="h3">今日出门核对</text>
+      <view wx:for="{{checklistItems}}" wx:key="id" class="check-row" data-id="{{item.id}}" bindtap="onCheckToggle">
+        <view class="check-ico {{item.checked ? 'check-ico--on' : ''}}">{{item.checked ? '✓' : ''}}</view>
+        <text class="check-txt">{{item.text}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <text class="h3">全部路径点</text>
+      <text class="mini">与地图编号一致。</text>
+      <view
+        wx:for="{{poiRows}}"
+        wx:key="key"
+        class="poi-row"
+        data-num="{{item.num}}"
+        bindtap="onPoiRowTap"
+      >
+        <text class="poi-num" style="color: {{item.color}}">{{item.num}}</text>
+        <view class="poi-mid">
+          <text class="poi-name">{{item.name}}</text>
+          <text class="poi-note">{{item.note}}</text>
+        </view>
+        <text class="poi-arrow">›</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 日程 -->
+  <scroll-view wx:if="{{activeTab === 'trip'}}" class="panel" scroll-y>
+    <view class="hero hero--sub">
+      <text class="hero-title hero-title--sm">日程详解</text>
+      <text class="hero-desc">与首页「第几天」一致；给爸妈看灰色小字即可。</text>
+    </view>
+    <scroll-view class="phase-strip phase-strip--pad" scroll-x enable-flex>
+      <view
+        wx:for="{{phaseChips}}"
+        wx:key="phase"
+        class="phase-chip {{item.active ? 'phase-chip--on' : ''}}"
+        data-phase="{{item.phase}}"
+        bindtap="onPhaseChipTap"
+      >
+        {{item.chip}}
+      </view>
+    </scroll-view>
+    <view class="card warn">
+      <text>故宫每周一闭馆；车次与票价以 12306 为准。</text>
+    </view>
+    <block wx:for="{{itinerary}}" wx:key="day">
+      <view class="card">
+        <view class="card-head">
+          <text class="day-tag">{{item.day}}</text>
+          <text class="card-title">{{item.title}}</text>
+        </view>
+        <text class="family-tip">{{item.familyTip}}</text>
+        <view wx:for="{{item.lines}}" wx:for-item="line" wx:key="*this" class="line">{{line}}</view>
+        <view wx:for="{{item.detail}}" wx:for-item="d" wx:key="*this" class="detail">{{d}}</view>
+      </view>
+    </block>
+    <view class="card">
+      <text class="h3">本阶段核对（同首页）</text>
+      <view wx:for="{{checklistItems}}" wx:key="id" class="check-row" data-id="{{item.id}}" bindtap="onCheckToggle">
+        <view class="check-ico {{item.checked ? 'check-ico--on' : ''}}">{{item.checked ? '✓' : ''}}</view>
+        <text class="check-txt">{{item.text}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 车票 -->
+  <scroll-view wx:if="{{activeTab === 'train'}}" class="panel" scroll-y>
+    <view class="card mini">给家里人：只记「车次 + 发车时间 + 检票口」三样；其余以 12306 票面为准。</view>
+    <text class="h3">邯郸东 → 北京西（晚间）</text>
+    <view class="table-wrap">
+      <view class="tr th">
+        <text class="td">车次</text>
+        <text class="td td--wide">发/到</text>
+        <text class="td">历时</text>
+        <text class="td td--price">参考</text>
+      </view>
+      <view wx:for="{{trainsOut}}" wx:key="no" class="tr">
+        <text class="td strong">{{item.no}}</text>
+        <text class="td td--wide">{{item.dep}}\n{{item.arr}}</text>
+        <text class="td">{{item.dur}}</text>
+        <text class="td td--price">{{item.price}}</text>
+      </view>
+    </view>
+    <text class="h3 mt">北京西 → 邯郸东（下午）</text>
+    <view class="table-wrap">
+      <view class="tr th">
+        <text class="td">车次</text>
+        <text class="td td--wide">发/到</text>
+        <text class="td">历时</text>
+        <text class="td td--price">参考</text>
+      </view>
+      <view wx:for="{{trainsRet}}" wx:key="no" class="tr">
+        <text class="td strong">{{item.no}}</text>
+        <text class="td td--wide">{{item.dep}}\n{{item.arr}}</text>
+        <text class="td">{{item.dur}}</text>
+        <text class="td td--price">{{item.price}}</text>
+      </view>
+    </view>
+    <view class="card mini">6 大 1 小：成人二等往返约 ¥418/人，儿童优待摊销后预算页按 ¥388/人占位。</view>
+  </scroll-view>
+
+  <!-- 酒店 -->
+  <scroll-view wx:if="{{activeTab === 'hotel'}}" class="panel" scroll-y>
+    <view class="card mini">「一键导航」使用示意坐标，到路口仍以现场路牌为准。</view>
+    <view wx:for="{{hotels}}" wx:key="title" class="card">
+      <text class="card-title">{{item.title}}</text>
+      <text class="kv">地址：{{item.addr}}</text>
+      <text class="kv">交通：{{item.metro}}</text>
+      <text class="kv price">参考：{{item.price}}</text>
+      <view class="hotel-actions">
+        <button
+          wx:if="{{item.navPoi}}"
+          class="btn-ghost"
+          size="mini"
+          data-poi="{{item.navPoi}}"
+          data-title="{{item.title}}"
+          bindtap="onHotelNavigate"
+        >
+          一键导航
+        </button>
+        <button
+          class="btn-ghost"
+          size="mini"
+          data-text="{{item.title}} {{item.addr}}"
+          bindtap="onCopy"
+        >
+          复制店名+地址
+        </button>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 预算 -->
+  <scroll-view wx:if="{{activeTab === 'budget'}}" class="panel" scroll-y>
+    <view class="card">
+      <text class="mini">7 人（6 大 1 小）占位；儿童票价不同请改「高铁/人」。</text>
+      <view class="field">
+        <text class="label">人数</text>
+        <input class="inp" type="number" value="{{budgetN}}" data-field="budgetN" bindinput="onBudgetInput" />
+      </view>
+      <view class="field">
+        <text class="label">往返高铁/人</text>
+        <input class="inp" type="digit" value="{{budgetTrain}}" data-field="budgetTrain" bindinput="onBudgetInput" />
+      </view>
+      <view class="field">
+        <text class="label">三晚房费合计</text>
+        <input class="inp" type="digit" value="{{budgetHotel}}" data-field="budgetHotel" bindinput="onBudgetInput" />
+      </view>
+      <view class="field">
+        <text class="label">餐饮合计</text>
+        <input class="inp" type="digit" value="{{budgetFood}}" data-field="budgetFood" bindinput="onBudgetInput" />
+      </view>
+      <view class="field">
+        <text class="label">门票等合计</text>
+        <input class="inp" type="digit" value="{{budgetTicket}}" data-field="budgetTicket" bindinput="onBudgetInput" />
+      </view>
+      <view class="field">
+        <text class="label">市内+杂项</text>
+        <input class="inp" type="digit" value="{{budgetLocal}}" data-field="budgetLocal" bindinput="onBudgetInput" />
+      </view>
+      <view class="sum">
+        <text>全员合计 ¥{{budgetTotal}}</text>
+        <text class="sum-per">人均 ¥{{budgetPer}}</text>
+      </view>
+      <text class="hint">{{hintBudget}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 备忘 -->
+  <scroll-view wx:if="{{activeTab === 'tips'}}" class="panel" scroll-y>
+    <view class="card">
+      <text class="h3">常用链接（点复制）</text>
+      <button class="link-btn" data-text="https://www.12306.cn/" bindtap="onCopy">12306</button>
+      <button class="link-btn" data-text="https://www.pgm.org.cn/" bindtap="onCopy">天安门广场预约</button>
+      <button class="link-btn" data-text="https://www.dpm.org.cn/" bindtap="onCopy">故宫博物院</button>
+    </view>
+    <view class="card">
+      <text class="h3">紧急电话（点拨打）</text>
+      <text class="mini">遇急事优先打 110/120；通话需系统授权。</text>
+      <view class="call-row">
+        <button class="call-btn" data-num="110" bindtap="onCall">110 报警</button>
+        <button class="call-btn" data-num="120" bindtap="onCall">120 急救</button>
+      </view>
+    </view>
+    <view class="card">
+      <text class="h3">出行再核对</text>
+      <text class="line">· 身份证、儿童证件</text>
+      <text class="line">· 故宫票、广场预约截图</text>
+      <text class="line">· 长城末班/直通车时间</text>
+      <text class="line">· 充电宝、舒适步行鞋</text>
+    </view>
+  </scroll-view>
+</view>

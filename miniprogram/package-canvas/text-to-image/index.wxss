@@ -1,0 +1,41 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx;
+}
+
+.area {
+  width: 100%;
+  min-height: 220rpx;
+  padding: 16rpx;
+  box-sizing: border-box;
+  border: 1rpx solid var(--border);
+  border-radius: 12rpx;
+  background: var(--surface);
+  margin-bottom: 20rpx;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+  margin-bottom: 24rpx;
+}
+
+.preview {
+  display: block;
+  margin: 0 auto 24rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1rpx solid var(--accent);
+}
+
+.hint {
+  display: block;
+  margin-top: 16rpx;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,70 @@
+<view class="page {{themeClass}}">
+  <view class="card">
+    <text class="card-title">备份与恢复</text>
+    <text class="muted block-gap">
+      备份为本地 JSON，可通过剪贴板或聊天文件自行保管；不提供云端存储，换机请保留文件并在新设备导入。
+    </text>
+    <text class="muted block-gap">完整导出字段如下（toolbox-backup-v2）：</text>
+    <text wx:for="{{backupLines}}" wx:key="*this" class="backup-line">{{item}}</text>
+
+    <button class="primary" bindtap="onExport">导出完整备份（剪贴板）</button>
+    <button class="ghost" bindtap="onChooseBackupFile">从聊天选择备份文件</button>
+    <button class="ghost" bindtap="onToggleImport">粘贴 JSON 手动导入</button>
+    <block wx:if="{{showImport}}">
+      <textarea
+        class="import-area"
+        placeholder="粘贴 toolbox-backup-v2 JSON"
+        value="{{importText}}"
+        bindinput="onImportInput"
+      />
+      <view class="import-actions">
+        <button class="primary half" bindtap="onImportMerge">合并导入</button>
+        <button class="danger-outline half" bindtap="onImportReplace">覆盖导入</button>
+      </view>
+      <text class="muted footnote">合并：收藏 / 固定 / 记录等与本地去重合并；覆盖：以备份为准写入。</text>
+    </block>
+
+    <button class="ghost gap-top" bindtap="onExportFavorites">仅导出收藏列表</button>
+    <button class="ghost" bindtap="onToggleImportFav">导入收藏列表</button>
+    <block wx:if="{{showImportFav}}">
+      <textarea
+        class="import-area"
+        placeholder='粘贴 {"favorites":[],"schema":"toolbox-favorites-v1"}'
+        value="{{importFavText}}"
+        bindinput="onImportFavInput"
+      />
+      <button class="primary" bindtap="onImportFavConfirm">写入收藏</button>
+    </block>
+  </view>
+
+  <view class="card">
+    <view class="usage-head">
+      <text class="card-title tight">使用统计（仅本机）</text>
+      <text class="usage-info">ⓘ</text>
+    </view>
+    <text class="muted usage-scope">
+      统计范围：仅存本设备；下方为各工具打开次数汇总（用于首页猜你喜欢等），不上传服务器。
+    </text>
+    <block wx:if="{{usageLines.length}}">
+      <text wx:for="{{usageLines}}" wx:key="*this" class="line">{{item}}</text>
+    </block>
+    <text wx:else class="muted">暂无数据，多打开几个工具试试</text>
+  </view>
+
+  <view class="card">
+    <text class="card-title">隐私与权限</text>
+    <text class="muted block-gap">
+      默认无账号登录。收藏、备份、搜索历史与使用统计仅存本机；剪贴板、相册等能力在您使用对应工具时触发，以系统授权为准。
+    </text>
+    <navigator class="nav-row" url="/pages/about/about" hover-class="nav-hover">
+      <text class="nav-label">查看关于页（版本与说明）</text>
+      <text class="nav-arrow">›</text>
+    </navigator>
+  </view>
+
+  <view class="card danger-zone">
+    <text class="card-title">数据清理</text>
+    <text class="muted block-gap">清除后将移除收藏、固定、最近使用与点击统计；不会卸载小程序。</text>
+    <button class="danger" bindtap="onClear">清除本地数据</button>
+  </view>
+</view>

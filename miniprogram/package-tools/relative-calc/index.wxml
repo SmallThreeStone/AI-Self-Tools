@@ -1,0 +1,15 @@
+<view class="page {{themeClass}}">
+  <input
+    class="search"
+    placeholder="搜索关系描述，如：爸爸、舅舅"
+    value="{{keyword}}"
+    bindinput="onSearch"
+  />
+  <scroll-view class="list" scroll-y>
+    <view wx:for="{{list}}" wx:key="q" class="item">
+      <text class="q">{{item.q}}</text>
+      <text class="a">→ {{item.a}}</text>
+    </view>
+  </scroll-view>
+  <text class="foot">为常见场景速查，各地称呼可能有差异，仅作参考。</text>
+</view>

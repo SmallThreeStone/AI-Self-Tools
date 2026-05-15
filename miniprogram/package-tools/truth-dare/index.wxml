@@ -1,0 +1,9 @@
+<view class="page {{themeClass}}">
+  <view class="modes">
+    <text class="chip {{mode === 'mix' ? 'on' : ''}}" data-m="mix" bindtap="onMode">混合</text>
+    <text class="chip {{mode === 'truth' ? 'on' : ''}}" data-m="truth" bindtap="onMode">真心话</text>
+    <text class="chip {{mode === 'dare' ? 'on' : ''}}" data-m="dare" bindtap="onMode">大冒险</text>
+  </view>
+  <button class="primary" bindtap="onNext">抽一张</button>
+  <view wx:if="{{card}}" class="card">{{card}}</view>
+</view>

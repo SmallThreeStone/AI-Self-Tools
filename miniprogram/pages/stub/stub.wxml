@@ -1,0 +1,6 @@
+<view class="page {{themeClass}}">
+  <view class="hero">{{icon}}</view>
+  <text class="title">{{title}}</text>
+  <text class="desc">{{desc}}</text>
+  <text class="hint">该工具尚未实现，可在配置表中接入页面路径。</text>
+</view>

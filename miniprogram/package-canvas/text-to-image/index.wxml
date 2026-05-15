@@ -1,0 +1,20 @@
+<view class="page {{themeClass}}">
+  <textarea
+    class="area"
+    placeholder="输入要转成图片的文字，支持换行"
+    value="{{content}}"
+    maxlength="8000"
+    bindinput="onInput"
+  />
+  <button class="primary" bindtap="onPreview">生成预览</button>
+
+  <canvas
+    canvas-id="tiCanvas"
+    class="preview"
+    style="{{canvasStyle}}"
+    disable-scroll="true"
+  />
+
+  <button class="ghost" bindtap="onSave" disabled="{{!ready}}">保存到相册</button>
+  <text class="hint">长文会按宽度自动换行；极大图片请注意性能。</text>
+</view>

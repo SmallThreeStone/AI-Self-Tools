@@ -1,0 +1,30 @@
+<view class="page {{themeClass}}">
+  <block wx:if="{{!editing}}">
+    <text class="tip">内容仅存本机，卸载小程序或清除数据会丢失。</text>
+    <button class="primary add" bindtap="onAdd">新建备忘</button>
+    <block wx:if="{{list.length}}">
+      <view
+        wx:for="{{list}}"
+        wx:key="id"
+        class="card"
+        data-id="{{item.id}}"
+        bindtap="onOpenItem"
+      >
+        <text class="card-title">{{item.title}}</text>
+        <text class="card-preview">{{item.body}}</text>
+        <text class="card-ts">{{item.tsLabel}}</text>
+      </view>
+    </block>
+    <text wx:else class="empty">暂无备忘</text>
+  </block>
+
+  <block wx:else>
+    <input class="title-inp" placeholder="标题（可选）" value="{{title}}" bindinput="onTitle" />
+    <textarea class="body-inp" placeholder="正文" value="{{body}}" bindinput="onBody" />
+    <view class="row">
+      <button class="ghost" bindtap="onBackList">返回</button>
+      <button class="danger" bindtap="onDelete">{{editId ? '删除' : '取消'}}</button>
+      <button class="primary sm" bindtap="onSave">保存</button>
+    </view>
+  </block>
+</view>

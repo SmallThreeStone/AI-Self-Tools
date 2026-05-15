@@ -1,0 +1,39 @@
+<view class="page {{themeClass}}">
+  <view class="card">
+    <text class="label">英文词头</text>
+    <input
+      class="field"
+      placeholder="必填，最多 48 字符"
+      maxlength="{{headwordMax}}"
+      value="{{headword}}"
+      bindinput="onHeadword"
+    />
+    <text class="label">中文释义</text>
+    <textarea
+      class="area"
+      placeholder="必填"
+      maxlength="500"
+      value="{{zh}}"
+      bindinput="onZh"
+    />
+    <text class="label">分类</text>
+    <view class="seg">
+      <view
+        class="seg-item {{category === 'daily' ? 'on' : ''}}"
+        data-cat="daily"
+        bindtap="onCat"
+      >
+        日常单词
+      </view>
+      <view
+        class="seg-item {{category === 'trade' ? 'on' : ''}}"
+        data-cat="trade"
+        bindtap="onCat"
+      >
+        外贸词汇
+      </view>
+    </view>
+    <text wx:if="{{hint}}" class="hint">{{hint}}</text>
+  </view>
+  <button class="primary" bindtap="onSave">保存</button>
+</view>

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "屏幕直尺",
+  "usingComponents": {
+    "health-disclaimer": "/components/health-disclaimer/health-disclaimer"
+  }
+}

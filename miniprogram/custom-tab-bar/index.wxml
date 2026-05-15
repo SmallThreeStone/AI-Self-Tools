@@ -1,0 +1,23 @@
+<view class="tab-host {{themeClass}}">
+  <view class="tab-bar-blur">
+    <view class="tab-bar-inner safe-bottom">
+      <view
+        wx:for="{{list}}"
+        wx:for-index="idx"
+        wx:key="pagePath"
+        class="tab-item {{selected === idx ? 'tab-item--active' : ''}}"
+        data-index="{{idx}}"
+        bindtap="onSwitchTab"
+      >
+        <view class="tab-pill">
+          <image
+            class="tab-ico"
+            src="{{selected === idx ? item.selectedIconPath : item.iconPath}}"
+            mode="aspectFit"
+          />
+          <text class="tab-txt">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

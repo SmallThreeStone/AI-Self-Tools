@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "tool-card-grid": "/components/tool-card-grid/tool-card-grid",
+    "tool-detail-sheet": "/components/tool-detail-sheet/tool-detail-sheet"
+  }
+}

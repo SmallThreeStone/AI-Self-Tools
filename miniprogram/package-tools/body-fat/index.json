@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "体脂与代谢",
+  "usingComponents": {
+    "health-disclaimer": "/components/health-disclaimer/health-disclaimer"
+  }
+}
